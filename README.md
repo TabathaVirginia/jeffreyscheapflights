@@ -1,4 +1,4 @@
-#COMP 426 Final Project
+COMP 426 Final Project
 
 Contributors:
 - Heather Crew
