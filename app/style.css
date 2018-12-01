@@ -1,0 +1,22 @@
+body {
+    background-color: #74A4BC;
+    font-family: 'Sedgwick Ave', cursive;
+    text-align: center;
+}
+
+.in {
+    color: #F1FEC6;
+    font-size: 25px;
+}
+
+#mainTitle {
+    color: #FF3A20;
+    font-family: 'Kumar One Outline', cursive;
+}
+
+input {
+    background-color: #29339B;
+    color: #F1FEC6;
+    font-size: 15px;
+    font-family: 'Sedgwick Ave', cursive;
+}
