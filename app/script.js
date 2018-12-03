@@ -2,7 +2,7 @@
 var origin = "";
 var dest = "";
 var date;
-var data;
+var idAirports = []; // 0 has dept, 1 has arr
 
 // JQuery Logic
 $(document).ready(function() {
@@ -40,8 +40,8 @@ $(document).ready(function() {
                             var arr_id = data1[0].arrival_id;
                             var dept = "";
                             var arr = "";
-                            //grab dept airport
-                            (function(dept_id, dept) {
+                            // Grab dept airport
+                            (function(dept_id) {
                                 $.ajax({
                                     xhrFields: {withCredentials: true},
                                     type: "GET",
@@ -50,28 +50,27 @@ $(document).ready(function() {
                                 }).done(function(d) {
                                     d = d.filter(x => x.id === dept_id);
                                     dept = d[0].code;
-                                    console.log("Departure from " + dept);
                                 });
-                            })(dept_id, dept);
-                            
-                            (function(arr_id, arr) {
+                            })(dept_id);
+                            // Grab arrival airport
+                            (function(arr_id) {
                                 $.ajax({
                                     xhrFields: {withCredentials: true},
                                     type: "GET",
                                     async: false,
                                     url: "http://comp426.cs.unc.edu:3001/airports?filter[id]=" + arr_id
-                                }).done(function(d) {
-                                    d = d.filter(x => x.id === arr_id);
-                                    arr = d[0].code;
-                                    console.log("Arrival to " + dept);
+                                }).done(function(a) {
+                                    a = a.filter(x => x.id === arr_id);
+                                    arr = a[0].code;
                                 });
-                            })(arr_id, arr);
-                            
+                            })(arr_id);
+                            idAirports[flightIDs[i]] = [dept, arr];
                         });
                     })(i);
                 }
             });
             handleOrigin();
+            console.log(idAirports);
         }
     });
 
