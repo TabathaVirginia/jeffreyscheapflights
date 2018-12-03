@@ -1,3 +1,4 @@
+
 body {
     background-color: #74A4BC;
     font-family: 'Sedgwick Ave', cursive;
@@ -19,4 +20,9 @@ input {
     color: #F1FEC6;
     font-size: 15px;
     font-family: 'Sedgwick Ave', cursive;
+}
+
+#dateInput {
+    font-size: 15px;
+    padding-left: 40%;
 }
