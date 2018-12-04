@@ -53,7 +53,6 @@ a {
 }
 
 .navbar-item {
-    float: right;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -100,7 +99,15 @@ td, th {
     padding: 8px;
 }
 
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
 .map{
     height:100pt;
     width:100pt;
+    font-size: 15px;
 }
