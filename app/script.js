@@ -12,8 +12,6 @@ var infoWindow;
 
 // JQuery Logic
 $(document).ready(function () {
-
-    //Login
     login();
 
     //Begin taking input.
@@ -27,11 +25,11 @@ $(document).ready(function () {
         }
     });
 
-    $("#goToHome").click(function (e) {
+    $("#goToHome").click(function(e) {
         location.reload();
     });
 
-    $("#goToTickets").click(function (e) {
+    $("#goToTickets").click(function(e) {
         alert("Ticket functionality coming!");
     });
 
@@ -83,13 +81,13 @@ function printIDs() {
 function display() {
     $(".in").empty();
     var empty = true;
-    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th><th>Buy Ticket</th></tr>";
+    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th><th>Leaving</th><th>Arrives</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[2] === dest) {
             empty = false;
             console.log("Match!");
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -122,21 +120,22 @@ function change() {
 
 function initMap() {
 // Skeleton for using places instead of actual map
-function initPlace() {
-    var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
+    function initPlace() {
+        var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
 
-    map = new google.maps.Map(document.getElementById('destMap'), {
-        center: mapCenter,
-        zoom: 15
-    });
+        map = new google.maps.Map(document.getElementById('destMap'), {
+            center: mapCenter,
+            zoom: 15
+        });
 
-    var request = {
-        query: 'Museum of Contemporary Art Australia',
-        fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
-    };
+        var request = {
+            query: 'Museum of Contemporary Art Australia',
+            fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
+        };
 
-    service = new google.maps.places.PlacesService(map);
-    service.findPlaceFromQuery(request, callback);
+        service = new google.maps.places.PlacesService(map);
+        service.findPlaceFromQuery(request, callback);
+    }
 }
 
 function callback(results, status) {
@@ -170,9 +169,9 @@ function loadDate(d) {
         xhrFields: { withCredentials: true },
         type: "GET",
         async: false,
-        // success: function (data) {
-        //     $("#loading").html("<p>Bebop</p>");
-        // },
+        success: function (data) {
+            $("#loading").html("<p>Bebop</p>");
+        },
         url: "http://comp426.cs.unc.edu:3001/instances?filter[date]=" + d
     }).done(function (data) {
         flightIDs = data.map(entry => entry.flight_id);
@@ -182,17 +181,25 @@ function loadDate(d) {
                     xhrFields: { withCredentials: true },
                     type: "GET",
                     async: false,
-                    url: "http://comp426.cs.unc.edu:3001/flights/ " + flightIDs[i]
+                    complete: function (data) {
+                        $("#loading").html("<p>Bebop</p>");
+                    },
+                    url: "http://comp426.cs.unc.edu:3001/flights/" + flightIDs[i]
                 }).done(function (data) {
                     var dept = airports[data.departure_id];
                     var arr = airports[data.arrival_id];
-                    origin = dept;
-                    dest = arr;
-                    flightInfo[flightIDs[i]] = dept + ";" + arr;
+                    var dep_time = (data.departs_at).substring(11, 16);
+                    var arr_time = (data.arrives_at).substring(11, 16);
+                    var flightNum = data.number;
+                    var airline = data.airline_id;
+                    console.log(dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
+                    // origin = dept;
+                    // dest = arr;
+                    flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline;
                 });
             })(i);
         }
-        printIDs();
+        //printIDs();
         handleOrigin();
     });
 }
@@ -205,9 +212,4 @@ function initMap(location) {
         zoom: 8,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
-}
-}
-
-function blank() {
-
 }
