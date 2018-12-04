@@ -54,7 +54,9 @@ $(document).ready(function () {
                         }).done(function (data) {
                             var dept = airports[data.departure_id];
                             var arr = airports[data.arrival_id];
-                            flightInfo[flightIDs[i]] = "From " + dept + " to " + arr;
+                            origin = dept;
+                            dest = arr;
+                            flightInfo[flightIDs[i]] = dept + ";" + arr;
                         });
                     })(i);
                 }
@@ -97,11 +99,19 @@ function printIDs() {
     }
 }
 
-//function display() {
-//    for (var i = 0; i < flightIDs.length; i++) {
-//        console.log("Flight " + flightIDs[i] + ": " + flightInfo[flightIDs[i]]);
-//    }
-//}
+function display() {
+    $(".in").empty();
+    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
+    for (var i = 0; i < flightIDs.length; i++) {
+        var info = flightInfo[flightIDs[i]].split(";");
+        if (info[0] === origin && info[2] === dest) {
+            console.log("Match!");
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th></tr>";
+        }
+    }
+    d+= "</table>";
+    $(".in").html(d);
+}
 
 function login() {
     $.ajax({

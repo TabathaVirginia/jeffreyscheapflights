@@ -1,7 +1,7 @@
 
 body {
     background-color: #74A4BC;
-    font-family: 'Sedgwick Ave', cursive;
+    font-family: "Lucida Console", Monaco, monospot;
     text-align: center;
 }
 
@@ -10,19 +10,31 @@ body {
     font-size: 25px;
 }
 
+/*
 #mainTitle {
     color: #FF3A20;
     font-family: 'Kumar One Outline', cursive;
 }
+*/
 
 input {
     background-color: #29339B;
     color: #F1FEC6;
     font-size: 15px;
-    font-family: 'Sedgwick Ave', cursive;
 }
 
 #dateInput {
     font-size: 15px;
     padding-left: 40%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
 }
