@@ -29,12 +29,17 @@ input {
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     color: #FFFFFF;
     padding-bottom: 10px;
-    padding-top: 1px;
+    padding-top: 10px;
     display:inline-block;
     font-size: 15px;
     text-align: center;
     padding-left: 25px;
     padding-right: 25px;
+}
+
+.navbar-item:hover {
+    cursor: pointer;
+    background-color: #a9c1bd;
 }
 
 .navbar {
