@@ -20,49 +20,11 @@ $(document).ready(function () {
     //Begin taking input.
     $("#dateInput").datepicker({
         format: "yyyy-mm-dd",
-        onSelect: function () {
+        onSelect: function() {
             date = $(this).datepicker('getDate');
-            $(".in").html("<p>Where are you flying from? Please input an airport code.</p><input id='originInput' type='text'>");
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
-
-            $.ajax({
-                xhrFields: { withCredentials: true },
-                type: "GET",
-                async: false,
-                url: "http://comp426.cs.unc.edu:3001/airports"
-            }).done(function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    airports[data[i].id] = data[i].code + ";" + data[i].name;
-                }
-            });
-
-            $.ajax({
-                xhrFields: { withCredentials: true },
-                type: "GET",
-                async: false,
-                url: "http://comp426.cs.unc.edu:3001/instances?filter[date]=" + d
-            }).done(function (data) {
-                flightIDs = data.map(entry => entry.flight_id);
-                for (var i = 0; i < flightIDs.length; i++) {
-                    (function (i) {
-                        $.ajax({
-                            xhrFields: { withCredentials: true },
-                            type: "GET",
-                            async: false,
-                            url: "http://comp426.cs.unc.edu:3001/flights/ " + flightIDs[i]
-                        }).done(function (data) {
-                            var dept = airports[data.departure_id];
-                            var arr = airports[data.arrival_id];
-                            origin = dept;
-                            dest = arr;
-                            flightInfo[flightIDs[i]] = dept + ";" + arr;
-                        });
-                    })(i);
-                }
-                printIDs();
-                handleOrigin();
-            });
+            loadDate(d);
         }
     });
 
@@ -76,6 +38,9 @@ $(document).ready(function () {
 });
 
 function handleOrigin() {
+    $(".in").show();
+    $("#loading").html("<p></p>");
+    $(".in").html("<p>Where are you flying from? Please input an airport code.</p><input id='originInput' type='text'>");
     $('#originInput').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
@@ -141,6 +106,10 @@ function login() {
     });
 }
 
+function change() {
+    $(".in").html("<p>Loading...</p>");
+}
+
 function initMap() {
     var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
 
@@ -165,4 +134,52 @@ function callback(results, status) {
             // createMarker(place);
         }
     }
+}
+
+function loadDate(d) {
+    //Get airports.
+    $.ajax({
+        xhrFields: { withCredentials: true },
+        type: "GET",
+        async: false,
+        success: function (data) {
+            $("#loading").html("<p>Loading...</p>");
+            $(".in").hide();
+        },
+        url: "http://comp426.cs.unc.edu:3001/airports"
+    }).done(function (data) {
+        for (var i = 0; i < data.length; i++) {
+            airports[data[i].id] = data[i].code + ";" + data[i].name;
+        }
+    });
+
+    $.ajax({
+        xhrFields: { withCredentials: true },
+        type: "GET",
+        async: false,
+        // success: function (data) {
+        //     $("#loading").html("<p>Bebop</p>");
+        // },
+        url: "http://comp426.cs.unc.edu:3001/instances?filter[date]=" + d
+    }).done(function (data) {
+        flightIDs = data.map(entry => entry.flight_id);
+        for (var i = 0; i < flightIDs.length; i++) {
+            (function (i) {
+                $.ajax({
+                    xhrFields: { withCredentials: true },
+                    type: "GET",
+                    async: false,
+                    url: "http://comp426.cs.unc.edu:3001/flights/ " + flightIDs[i]
+                }).done(function (data) {
+                    var dept = airports[data.departure_id];
+                    var arr = airports[data.arrival_id];
+                    origin = dept;
+                    dest = arr;
+                    flightInfo[flightIDs[i]] = dept + ";" + arr;
+                });
+            })(i);
+        }
+        printIDs();
+        handleOrigin();
+    });
 }
