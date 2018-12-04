@@ -53,3 +53,8 @@ td, th {
     text-align: left;
     padding: 8px;
 }
+
+.map{
+    height:100pt;
+    width:100pt;
+}

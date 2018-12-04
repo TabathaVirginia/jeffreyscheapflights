@@ -66,12 +66,12 @@ $(document).ready(function () {
         }
     });
 
-    $("#goToHome").click(function(e) {
+    $("#goToHome").click(function (e) {
         location.reload();
     });
-    
-    $("#goToTickets").click(function(e) {
-       alert("Ticket functionality coming!");
+
+    $("#goToTickets").click(function (e) {
+        alert("Ticket functionality coming!");
     });
 });
 
@@ -117,7 +117,7 @@ function display() {
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th></tr>";
         }
     }
-    d+= "</table>";
+    d += "</table>";
     if (!empty) {
         $(".in").html(d);
     } else {
@@ -140,29 +140,34 @@ function login() {
         },
     });
 }
+// Skeleton for using places instead of actual map
+// function initMap() {
+//     var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
 
-function initMap() {
-    var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
+//     map = new google.maps.Map(document.getElementById('destMap'), {
+//         center: mapCenter,
+//         zoom: 15
+//     });
 
+//     var request = {
+//         query: 'Museum of Contemporary Art Australia',
+//         fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
+//     };
+
+//     service = new google.maps.places.PlacesService(map);
+//     service.findPlaceFromQuery(request, callback);
+// }
+
+function initMap(location) {
+    // Figure out how to center on location of airport
     map = new google.maps.Map(document.getElementById('destMap'), {
-        center: mapCenter,
-        zoom: 15
+        center: { lat: 35.9132, lng: -79.0558 },
+        zoom: 8,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
-
-    var request = {
-        query: 'Museum of Contemporary Art Australia',
-        fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
-    };
-
-    service = new google.maps.places.PlacesService(map);
-    service.findPlaceFromQuery(request, callback);
+    console.log(map)
 }
 
-function callback(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-            // createMarker(place);
-        }
-    }
+function blank() {
+
 }
