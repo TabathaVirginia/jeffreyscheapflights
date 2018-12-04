@@ -178,7 +178,7 @@ function display() {
     for (var i = 0; i < flightIDs.length; i++) {
         //console.log(flightInfo[flightIDs[i]]);
         var info = flightInfo[flightIDs[i]].split(";");
-
+        console.log(origin + " --> " + dest);
         if (info[0] === origin && info[2] === dest) {
             empty = false;
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + +" destLong=" + +">Buy Ticket</th></tr>";
@@ -292,12 +292,12 @@ function loadDate(d) {
                     var xHas = false;
                     var yHas = false;
                     for (var j = 0; j < arrivingCache.length; j++) {
-                        if (arrivingCache[i] === x[1] + " (" + x[0] + ")") {
+                        if (arrivingCache[j] === x[1] + " (" + x[0] + ")") {
                             xHas = true;
                         }
                     }
                     for (var j = 0; j < departureCache.length; j++) {
-                        if (departureCache[i] === y[1] + " (" + y[0] + ")") {
+                        if (departureCache[j] === y[1] + " (" + y[0] + ")") {
                             yHas = true;
                         }
                     }
