@@ -23,6 +23,7 @@ $(document).ready(function () {
             date = $(this).datepicker('getDate');
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
+            alert("Loading your flights. This may take a few seconds (:");
             loadDate(d);
         }
     });
