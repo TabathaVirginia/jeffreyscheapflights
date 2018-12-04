@@ -15,7 +15,6 @@ $(document).ready(function () {
 
     //Login
     login();
-    initMap();
 
     //Begin taking input.
     $("#dateInput").datepicker({
@@ -28,12 +27,12 @@ $(document).ready(function () {
         }
     });
 
-    $("#goToHome").click(function(e) {
+    $("#goToHome").click(function (e) {
         location.reload();
     });
-    
-    $("#goToTickets").click(function(e) {
-       alert("Ticket functionality coming!");
+
+    $("#goToTickets").click(function (e) {
+        alert("Ticket functionality coming!");
     });
 });
 
@@ -47,6 +46,7 @@ function handleOrigin() {
             origin = $(this).val();
             $(".in").empty();
             $(".in").html("<p>Where are you flying to?</p><input id='destInput' type='text'>");
+            $("#destInput").focus();
             handleDest();
         }
     });
@@ -73,16 +73,16 @@ function printIDs() {
 function display() {
     $(".in").empty();
     var empty = true;
-    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
+    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[2] === dest) {
             empty = false;
             console.log("Match!");
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th><button class='buyTicket' flightId=" + flightIDs[i] + ">Buy Ticket</th></tr>";
         }
     }
-    d+= "</table>";
+    d += "</table>";
     if (!empty) {
         $(".in").html(d);
     } else {
@@ -105,12 +105,17 @@ function login() {
         },
     });
 }
+<<<<<<< HEAD
 
 function change() {
     $(".in").html("<p>Loading...</p>");
 }
 
 function initMap() {
+=======
+// Skeleton for using places instead of actual map
+function initPlace() {
+>>>>>>> 07ac195a099b6ecd1af9d5b58d295210d3b0d6ab
     var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
 
     map = new google.maps.Map(document.getElementById('destMap'), {
@@ -131,11 +136,13 @@ function callback(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
-            // createMarker(place);
+            // createMarker(results[i]);
+            console.log(place)
         }
     }
 }
 
+<<<<<<< HEAD
 function loadDate(d) {
     //Get airports.
     $.ajax({
@@ -182,4 +189,18 @@ function loadDate(d) {
         printIDs();
         handleOrigin();
     });
+=======
+// Only map without all the fun attractions
+function initMap(location) {
+    // Figure out how to center on location of airport
+    map = new google.maps.Map(document.getElementById('destMap'), {
+        center: { lat: 35.9132, lng: -79.0558 },
+        zoom: 8,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+    });
+}
+
+function blank() {
+
+>>>>>>> 07ac195a099b6ecd1af9d5b58d295210d3b0d6ab
 }
