@@ -5,6 +5,8 @@ var date;
 var flightIDs = [];
 var flightInfo = [];
 var airports = [];
+var arrivingCache = [];
+var departureCache = [];
 var map;
 var service;
 var infoWindow;
@@ -58,6 +60,40 @@ function handleOrigin() {
             handleDest();
         }
     });
+
+    //Suggestions logic
+    var cache = {};
+    var drew = false;
+    $("#originInput").on("keyup", function(event){
+        var query = $("#originInput").val();
+        if(query.length > 0){
+            if (query in cache){
+                results = cache[query];
+            } else {
+                var results = $.grep(departureCache, function(item){
+                    return item.search(RegExp(query, "i")) != -1;
+                });
+                cache[query] = results;
+            }
+            if (drew == false) {
+                $("#originInput").after('<ul id="res"></ul>');
+                drew = true;
+                $("#res").on("click", "li", function(){
+                    var curr = $(this).text();
+                    $("#originInput").val(curr.substring(curr.length-4, curr.length-1));
+                    $("#res").empty();
+                 });
+            } else {
+                $("#res").empty();
+            }
+            for(term in results){
+                $("#res").append("<li>" + results[term] + "</li>");
+            }
+        } else if (drew) {
+            $("#res").empty();
+        }
+    });
+
 }
 
 function handleDest() {
@@ -68,6 +104,38 @@ function handleDest() {
             $(".in").empty();
             $(".in").html("<p>Displaying ajax response...</p>");
             display();
+        }
+    });
+
+    var cache = {};
+    var drew = false;
+    $("#destInput").on("keyup", function(event){
+        var query = $("#destInput").val();
+        if(query.length > 0){
+            if (query in cache){
+                results = cache[query];
+            } else {
+                var results = $.grep(departureCache, function(item){
+                    return item.search(RegExp(query, "i")) != -1;
+                });
+                cache[query] = results;
+            }
+            if (drew == false) {
+                $("#destInput").after('<ul id="res"></ul>');
+                drew = true;
+                $("#res").on("click", "li", function(){
+                    var curr = $(this).text();
+                    $("#destInput").val(curr.substring(curr.length-4, curr.length-1));
+                    $("#res").empty();
+                 });
+            } else {
+                $("#res").empty();
+            }
+            for(term in results){
+                $("#res").append("<li>" + results[term] + "</li>");
+            }
+        } else if (drew) {
+            $("#res").empty();
         }
     });
 }
@@ -86,7 +154,6 @@ function display() {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[2] === dest) {
             empty = false;
-            console.log("Match!");
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
         }
     }
@@ -193,9 +260,11 @@ function loadDate(d) {
                     var flightNum = data.number;
                     var airline = data.airline_id;
                     console.log(dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
-                    // origin = dept;
-                    // dest = arr;
                     flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline;
+                    var x = arr.split(";");
+                    var y = dept.split(";");
+                    arrivingCache.push(x[1] + " (" + x[0] + ")");
+                    departureCache.push(y[1] + " (" + y[0] + ")");
                 });
             })(i);
         }
