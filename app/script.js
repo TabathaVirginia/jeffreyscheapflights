@@ -105,17 +105,14 @@ function login() {
         },
     });
 }
-<<<<<<< HEAD
 
 function change() {
     $(".in").html("<p>Loading...</p>");
 }
 
 function initMap() {
-=======
 // Skeleton for using places instead of actual map
 function initPlace() {
->>>>>>> 07ac195a099b6ecd1af9d5b58d295210d3b0d6ab
     var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
 
     map = new google.maps.Map(document.getElementById('destMap'), {
@@ -142,7 +139,6 @@ function callback(results, status) {
     }
 }
 
-<<<<<<< HEAD
 function loadDate(d) {
     //Get airports.
     $.ajax({
@@ -189,7 +185,8 @@ function loadDate(d) {
         printIDs();
         handleOrigin();
     });
-=======
+}
+
 // Only map without all the fun attractions
 function initMap(location) {
     // Figure out how to center on location of airport
@@ -199,8 +196,8 @@ function initMap(location) {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
 }
+}
 
 function blank() {
 
->>>>>>> 07ac195a099b6ecd1af9d5b58d295210d3b0d6ab
 }
