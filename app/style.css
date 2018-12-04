@@ -10,12 +10,9 @@ body {
     font-size: 25px;
 }
 
-/*
 #mainTitle {
     color: #FF3A20;
-    font-family: 'Kumar One Outline', cursive;
 }
-*/
 
 input {
     background-color: #29339B;
@@ -27,6 +24,24 @@ input {
     font-size: 15px;
     padding-left: 40%;
 }
+
+.navbar-item {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    color: #FFFFFF;
+    padding-bottom: 10px;
+    padding-top: 1px;
+    display:inline-block;
+    font-size: 15px;
+    text-align: center;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.navbar {
+    background-color: #7A918D;
+    text-align: center;
+}
+
 
 table {
     border-collapse: collapse;

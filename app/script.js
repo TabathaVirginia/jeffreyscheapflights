@@ -66,7 +66,13 @@ $(document).ready(function () {
         }
     });
 
-
+    $("#goToHome").click(function(e) {
+        location.reload();
+    });
+    
+    $("#goToTickets").click(function(e) {
+       alert("Ticket functionality coming!");
+    });
 });
 
 function handleOrigin() {
@@ -101,16 +107,22 @@ function printIDs() {
 
 function display() {
     $(".in").empty();
+    var empty = true;
     var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[2] === dest) {
+            empty = false;
             console.log("Match!");
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th></tr>";
         }
     }
     d+= "</table>";
-    $(".in").html(d);
+    if (!empty) {
+        $(".in").html(d);
+    } else {
+        $(".in").html("<p>Uh oh! Looks like no flights match that date and destination-origin combo. Please try again.</p>");
+    }
 }
 
 function login() {
