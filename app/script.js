@@ -73,6 +73,16 @@ $(document).ready(function () {
     $("#goToTickets").click(function (e) {
         alert("Ticket functionality coming!");
     });
+
+    $("body").on("click", ".buyTicketButton", function () {
+        $(".in").empty();
+        var flightId = parseInt($(this).attr("flightId"));
+        var origin = $(this).attr("origin");
+        var dest = $(this).attr("dest")
+        var tableHTML = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
+        tableHTML += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
+        $(".in").html(tableHTML);
+    })
 });
 
 function handleOrigin() {
@@ -115,7 +125,7 @@ function display() {
         if (info[0] === origin && info[2] === dest) {
             empty = false;
             console.log("Match!");
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th><button class='buyTicket' flightId=" + flightIDs[i] + ">Buy Ticket</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
