@@ -23,7 +23,11 @@ body {
 }
 
 #mainTitle {
+    display: block;
+    margin: 0;
+    padding: 100px;
     color: #FF3A20;
+    background-color: #FFFFF9;
 }
 
 input {
@@ -44,9 +48,13 @@ input {
     margin-right: auto;
 }
 
+a {
+    color: #fffff9;
+}
+
 .navbar-item {
+    float: right;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
-    color: #FFFFFF;
     padding-bottom: 10px;
     padding-top: 10px;
     display:inline-block;
@@ -54,16 +62,31 @@ input {
     text-align: center;
     padding-left: 25px;
     padding-right: 25px;
+    height: 100%;
 }
 
-.navbar-item:hover {
+.left-navbar-item {
+    font-family: "Lucida Console", Monaco, monospot;
+    color: #FF3A20;
+    font-weight: bolder;
+    font-size: 15pt;
+    float: left;
+    background-color: #a9c1bd;
+    border-radius: 5px;
+}
+
+a:hover {
     cursor: pointer;
     background-color: #a9c1bd;
 }
 
 .navbar {
+    top: 0;
+    position: sticky;
     background-color: #7A918D;
     text-align: center;
+    height: 60px;
+    padding: 10px;
 }
 
 table {
