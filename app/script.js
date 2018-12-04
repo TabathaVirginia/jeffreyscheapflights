@@ -15,7 +15,6 @@ $(document).ready(function () {
 
     //Login
     login();
-    initPlace();
 
     //Begin taking input.
     $("#dateInput").datepicker({
@@ -23,6 +22,7 @@ $(document).ready(function () {
         onSelect: function () {
             date = $(this).datepicker('getDate');
             $(".in").html("<p>Where are you flying from? Please input an airport code.</p><input id='originInput' type='text'>");
+            $("#originInput").focus();
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
 
@@ -82,6 +82,7 @@ function handleOrigin() {
             origin = $(this).val();
             $(".in").empty();
             $(".in").html("<p>Where are you flying to?</p><input id='destInput' type='text'>");
+            $("#destInput").focus();
             handleDest();
         }
     });
@@ -108,13 +109,13 @@ function printIDs() {
 function display() {
     $(".in").empty();
     var empty = true;
-    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
+    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[2] === dest) {
             empty = false;
             console.log("Match!");
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th><button class='buyTicket' flightId=" + flightIDs[i] + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
