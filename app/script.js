@@ -1,9 +1,7 @@
 // Globals
-var origin = "";
-var dest = "";
 var date;
 var flightIDs = [];
-var idAirports = [];
+var flightInfo = [];
 var airports =[];
 
 // JQuery Logic
@@ -49,7 +47,7 @@ $(document).ready(function() {
                         }).done(function(data) {
                             var dept = airports[data.departure_id];
                             var arr = airports[data.arrival_id];
-                            idAirports[flightIDs[i]] = "From " + dept + " to " + arr;
+                            flightInfo[flightIDs[i]] = "From " + dept + " to " + arr;
                         });
                     })(i);
                 }
@@ -88,7 +86,7 @@ function handleDest() {
 
 function printIDs() {
     for (var i = 0; i < flightIDs.length; i++) {
-        console.log("Flight " + flightIDs[i] + ": " + idAirports[flightIDs[i]]);
+        console.log("Flight " + flightIDs[i] + ": " + flightInfo[flightIDs[i]]);
     }
 }
 
