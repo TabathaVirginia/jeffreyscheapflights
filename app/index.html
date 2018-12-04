@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Jeffrey's Cheap Flights</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="script.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Kumar+One+Outline|Sedgwick+Ave" rel="stylesheet">
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHH9KEATOdK-4vdCT-7nziWpqw_T7Ortg&callback=initMap"
+        type="text/javascript"></script> -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHH9KEATOdK-4vdCT-7nziWpqw_T7Ortg&libraries=places"></script>
 </head>
+
 <body>
     <h1 id="mainTitle">Jeffrey's Moderately Priced Flying Chairs</h1>
     <div class="in">
         <p>Which day would you like to travel?</p>
         <div id='dateInput' type='text'></div>
     </div>
+    <div class="map" id="destMap">
+    </div>
 </body>
+
 </html>
