@@ -2,7 +2,9 @@
 var origin = "";
 var dest = "";
 var date;
-var idAirports = []; // 0 has dept, 1 has arr
+var flightIDs = [];
+var idAirports = [];
+var airports =[];
 
 // JQuery Logic
 $(document).ready(function() {
@@ -22,55 +24,38 @@ $(document).ready(function() {
             $.ajax({
                 xhrFields: {withCredentials: true},
                 type: "GET",
+                async: false,
+                url: "http://comp426.cs.unc.edu:3001/airports"
+            }).done(function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    airports[data[i].id] = data[i].code;
+                }
+            });
+            
+            $.ajax({
+                xhrFields: {withCredentials: true},
+                type: "GET",
+                async: false,
                 url: "http://comp426.cs.unc.edu:3001/instances?filter[date]=" + d
             }).done(function(data) {
-                data = data.filter(entry => entry.date == d); //making extra fucking sure
-                var flightIDs = data.map(entry => entry.flight_id);
-                var idInfo = {};
+                flightIDs = data.map(entry => entry.flight_id);
                 for (var i = 0; i < flightIDs.length; i++) {
-                    (function(i) { // Mr Closure
+                    (function(i) {
                         $.ajax({
                             xhrFields: {withCredentials: true},
                             type: "GET",
                             async: false,
-                            url: "http://comp426.cs.unc.edu:3001/flights?filter[id]=" + flightIDs[i]
-                        }).done(function(data1) {
-                            data1 = data1.filter(x => x.id === flightIDs[i]); //making extra fucking sure
-                            var dept_id = data1[0].departure_id;
-                            var arr_id = data1[0].arrival_id;
-                            var dept = "";
-                            var arr = "";
-                            // Grab dept airport
-                            (function(dept_id) {
-                                $.ajax({
-                                    xhrFields: {withCredentials: true},
-                                    type: "GET",
-                                    async: false,
-                                    url: "http://comp426.cs.unc.edu:3001/airports?filter[id]=" + dept_id
-                                }).done(function(d) {
-                                    d = d.filter(x => x.id === dept_id);
-                                    dept = d[0].code;
-                                });
-                            })(dept_id);
-                            // Grab arrival airport
-                            (function(arr_id) {
-                                $.ajax({
-                                    xhrFields: {withCredentials: true},
-                                    type: "GET",
-                                    async: false,
-                                    url: "http://comp426.cs.unc.edu:3001/airports?filter[id]=" + arr_id
-                                }).done(function(a) {
-                                    a = a.filter(x => x.id === arr_id);
-                                    arr = a[0].code;
-                                });
-                            })(arr_id);
-                            idAirports[flightIDs[i]] = [dept, arr];
+                            url: "http://comp426.cs.unc.edu:3001/flights/ " + flightIDs[i]
+                        }).done(function(data) {
+                            var dept = airports[data.departure_id];
+                            var arr = airports[data.arrival_id];
+                            idAirports[flightIDs[i]] = "From " + dept + " to " + arr;
                         });
                     })(i);
                 }
+                printIDs();
+                handleOrigin();
             });
-            handleOrigin();
-            console.log(idAirports);
         }
     });
 
@@ -99,6 +84,12 @@ function handleDest() {
             handleDate();
         }
     });
+}
+
+function printIDs() {
+    for (var i = 0; i < flightIDs.length; i++) {
+        console.log("Flight " + flightIDs[i] + ": " + idAirports[flightIDs[i]]);
+    }
 }
 
 function login() {
