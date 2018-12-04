@@ -13,11 +13,10 @@ var infoWindow;
 // JQuery Logic
 $(document).ready(function () {
     login();
-
     //Begin taking input.
     $("#dateInput").datepicker({
         format: "yyyy-mm-dd",
-        onSelect: function() {
+        onSelect: function () {
             date = $(this).datepicker('getDate');
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
@@ -25,11 +24,11 @@ $(document).ready(function () {
         }
     });
 
-    $("#goToHome").click(function(e) {
+    $("#goToHome").click(function (e) {
         location.reload();
     });
 
-    $("#goToTickets").click(function(e) {
+    $("#goToTickets").click(function (e) {
         alert("Ticket functionality coming!");
     });
 
@@ -84,10 +83,11 @@ function display() {
     var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th><th>Leaving</th><th>Arrives</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
+
         if (info[0] === origin && info[2] === dest) {
             empty = false;
             console.log("Match!");
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + +" destLong=" + +">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -118,24 +118,22 @@ function change() {
     $(".in").html("<p>Loading...</p>");
 }
 
-function initMap() {
 // Skeleton for using places instead of actual map
-    function initPlace() {
-        var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
+function initPlace(lat, long) {
+    var mapCenter = new google.maps.LatLng(lat, long);
 
-        map = new google.maps.Map(document.getElementById('destMap'), {
-            center: mapCenter,
-            zoom: 15
-        });
+    map = new google.maps.Map(document.getElementById('destMap'), {
+        center: mapCenter,
+        zoom: 15
+    });
 
-        var request = {
-            query: 'Museum of Contemporary Art Australia',
-            fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
-        };
+    // var request = {
+    //     query: 'Museum of Contemporary Art Australia',
+    //     fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
+    // };
 
-        service = new google.maps.places.PlacesService(map);
-        service.findPlaceFromQuery(request, callback);
-    }
+    // service = new google.maps.places.PlacesService(map);
+    // service.findPlaceFromQuery(request, callback);
 }
 
 function callback(results, status) {
@@ -143,7 +141,7 @@ function callback(results, status) {
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
             // createMarker(results[i]);
-            console.log(place)
+            // console.log(place)
         }
     }
 }
@@ -160,8 +158,17 @@ function loadDate(d) {
         },
         url: "http://comp426.cs.unc.edu:3001/airports"
     }).done(function (data) {
+        console.log(data[0])
         for (var i = 0; i < data.length; i++) {
-            airports[data[i].id] = data[i].code + ";" + data[i].name;
+            airports[data[i].id] = data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude;
+            // {
+            //     code: data[i].code,
+            //     name: data[i].name,
+            //     lat: data[i].latitude,
+            //     long: data[i].longitude,
+            // }
+
+            console.log("Airport info:" + data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude);
         }
     });
 
@@ -192,7 +199,7 @@ function loadDate(d) {
                     var arr_time = (data.arrives_at).substring(11, 16);
                     var flightNum = data.number;
                     var airline = data.airline_id;
-                    console.log(dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
+                    // console.log(dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
                     // origin = dept;
                     // dest = arr;
                     flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline;
