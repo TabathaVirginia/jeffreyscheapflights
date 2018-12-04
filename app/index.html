@@ -4,8 +4,7 @@
 <head>
     <title>Jeffrey's Cheap Flights</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="script.js"></script>
@@ -14,14 +13,17 @@
 
 <body>
     <nav class="navbar">
-        <a class="navbar-item" id="goToHome">Home</a>
+        <div class="left-navbar-item navbar-item">JFC</div>
         <a class="navbar-item" id="goToTickets">My Tickets</a>
+        <a class="navbar-item" id="goToHome">Home</a>
     </nav>
     <h1 id="mainTitle">Jeffrey's Cheap Flights</h1>
-    <p id="loading" ></p>
+    <p id="loading"></p>
     <div class="in">
         <p>Which day would you like to travel?</p>
-        <div id='dateInput' type='text'></div>
+        <div class="calendar-container">
+            <div id='dateInput' type='text'></div>
+        </div>
     </div>
     <div class="map" id="destMap">
     </div>
