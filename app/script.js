@@ -184,14 +184,6 @@ function login() {
     });
 }
 
-<<<<<<< HEAD
-function initMap() {
-=======
-function change() {
-    $(".in").html("<p>Loading...</p>");
-}
-
->>>>>>> 2c63ad0519f43b26e3ae10d887cec9d3796f8fe0
 // Skeleton for using places instead of actual map
 function initPlace(lat, long) {
     var mapCenter = new google.maps.LatLng(lat, long);
