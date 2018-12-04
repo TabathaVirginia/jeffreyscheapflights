@@ -153,11 +153,13 @@ function display() {
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[2] === dest) {
+            console.log("Match!");
             empty = false;
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
+    console.log(d);
     if (!empty) {
         $(".in").html(d);
     } else {
@@ -179,10 +181,6 @@ function login() {
             withCredentials: true
         },
     });
-}
-
-function change() {
-    $(".in").html("<p>Loading...</p>");
 }
 
 function initMap() {
@@ -263,12 +261,28 @@ function loadDate(d) {
                     flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline;
                     var x = arr.split(";");
                     var y = dept.split(";");
-                    arrivingCache.push(x[1] + " (" + x[0] + ")");
-                    departureCache.push(y[1] + " (" + y[0] + ")");
+                    var xHas = false;
+                    var yHas = false;
+                    for (var i = 0; i < arrivingCache.length; i++) {
+                        if (arrivingCache[i] === x[1] + " (" + x[0] + ")") {
+                            xHas = true;
+                        }
+                    }
+                    for (var i = 0; i < departureCache.length; i++) {
+                        if (departureCache[i] === y[1] + " (" + y[0] + ")") {
+                            yHas = true;
+                        }
+                    }
+                    if (!xHas) {
+                        arrivingCache.push(x[1] + " (" + x[0] + ")");
+                    }
+                    if (!yHas) {
+                        departureCache.push(y[1] + " (" + y[0] + ")");
+                    }
                 });
             })(i);
         }
-        //printIDs();
+
         handleOrigin();
     });
 }
