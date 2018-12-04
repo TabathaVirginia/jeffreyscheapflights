@@ -1,4 +1,6 @@
 // Globals
+var origin = "";
+var dest = "";
 var date;
 var flightIDs = [];
 var flightInfo = [];
@@ -26,7 +28,7 @@ $(document).ready(function() {
                 url: "http://comp426.cs.unc.edu:3001/airports"
             }).done(function(data) {
                 for (var i = 0; i < data.length; i++) {
-                    airports[data[i].id] = data[i].code;
+                    airports[data[i].id] = data[i].code + ";" + data[i].name;
                 }
             });
             
@@ -79,7 +81,7 @@ function handleDest() {
             dest = $(this).val();
             $(".in").empty();
             $(".in").html("<p>Displaying ajax response...</p>");
-            handleDate();
+            display();
         }
     });
 }
@@ -89,6 +91,12 @@ function printIDs() {
         console.log("Flight " + flightIDs[i] + ": " + flightInfo[flightIDs[i]]);
     }
 }
+
+//function display() {
+//    for (var i = 0; i < flightIDs.length; i++) {
+//        console.log("Flight " + flightIDs[i] + ": " + flightInfo[flightIDs[i]]);
+//    }
+//}
 
 function login() {
     $.ajax({
