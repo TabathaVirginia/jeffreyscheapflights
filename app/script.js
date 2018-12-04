@@ -42,6 +42,32 @@ $(document).ready(function () {
         var tableHTML = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
         tableHTML += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
         $(".in").html(tableHTML);
+        var fName = prompt("Please enter your first name.", "Kenan");
+        var mName = prompt("Please enter your middle name.", "Danger");
+        var lName = prompt("Please enter your last name.", "Meyer-Patel");
+        var age = prompt("What's your age?", "74");
+        var gender = prompt("What's your gender?", "Other");
+
+        $.ajax({
+            url: 'http://comp426.cs.unc.edu:3001/tickets',
+            type: 'POST',
+            data: {
+                ticket: {
+                    first_name: fName,
+                    middle_name: mName,
+                    last_name: lName,
+                    age: age,
+                    gender: gender,
+                    is_purchased: true,
+                    price_paid: "100.00",
+                    instance_id: flightId,
+                    seat_id: 15
+                },
+            },
+            xhrFields: {withCredentials: true}
+        }).done(function (data) {
+            console.log("Ticket purchased!");
+        });
     })
 });
 
@@ -139,28 +165,26 @@ function handleDest() {
     });
 }
 
-function printIDs() {
-    for (var i = 0; i < flightIDs.length; i++) {
-        console.log("Flight " + flightIDs[i] + ": " + flightInfo[flightIDs[i]]);
-    }
-}
+// function printIDs() {
+//     for (var i = 0; i < flightIDs.length; i++) {
+//         console.log("Flight " + flightIDs[i] + ": " + flightInfo[flightIDs[i]]);
+//     }
+// }
 
 function display() {
     $(".in").empty();
     var empty = true;
     var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th><th>Leaving</th><th>Arrives</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
+        //console.log(flightInfo[flightIDs[i]]);
         var info = flightInfo[flightIDs[i]].split(";");
 
         if (info[0] === origin && info[2] === dest) {
-            console.log("Match!");
             empty = false;
-            console.log("Match!");
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + +" destLong=" + +">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
-    console.log(d);
     if (!empty) {
         $(".in").html(d);
     } else {
@@ -224,7 +248,6 @@ function loadDate(d) {
         },
         url: "http://comp426.cs.unc.edu:3001/airports"
     }).done(function (data) {
-        console.log(data[0])
         for (var i = 0; i < data.length; i++) {
             airports[data[i].id] = data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude;
             // {
@@ -234,7 +257,7 @@ function loadDate(d) {
             //     long: data[i].longitude,
             // }
 
-            console.log("Airport info:" + data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude);
+            // console.log("Airport info:" + data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude);
         }
     });
 
@@ -254,9 +277,6 @@ function loadDate(d) {
                     xhrFields: { withCredentials: true },
                     type: "GET",
                     async: false,
-                    complete: function (data) {
-                        $("#loading").html("<p>Bebop</p>");
-                    },
                     url: "http://comp426.cs.unc.edu:3001/flights/" + flightIDs[i]
                 }).done(function (data) {
                     var dept = airports[data.departure_id];
@@ -265,21 +285,18 @@ function loadDate(d) {
                     var arr_time = (data.arrives_at).substring(11, 16);
                     var flightNum = data.number;
                     var airline = data.airline_id;
-                    // console.log(dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
-                    // origin = dept;
-                    // dest = arr;
-                    console.log(dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
+                    //console.log(flightIDs[i] + " " + dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
                     flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline;
                     var x = arr.split(";");
                     var y = dept.split(";");
                     var xHas = false;
                     var yHas = false;
-                    for (var i = 0; i < arrivingCache.length; i++) {
+                    for (var j = 0; j < arrivingCache.length; j++) {
                         if (arrivingCache[i] === x[1] + " (" + x[0] + ")") {
                             xHas = true;
                         }
                     }
-                    for (var i = 0; i < departureCache.length; i++) {
+                    for (var j = 0; j < departureCache.length; j++) {
                         if (departureCache[i] === y[1] + " (" + y[0] + ")") {
                             yHas = true;
                         }
@@ -293,7 +310,6 @@ function loadDate(d) {
                 });
             })(i);
         }
-
         handleOrigin();
     });
 }
