@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     //Login
     login();
-    initMap();
+    initPlace();
 
     //Begin taking input.
     $("#dateInput").datepicker({
@@ -141,23 +141,34 @@ function login() {
     });
 }
 // Skeleton for using places instead of actual map
-// function initMap() {
-//     var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
+function initPlace() {
+    var mapCenter = new google.maps.LatLng(-33.8617374, 151.2021291);
 
-//     map = new google.maps.Map(document.getElementById('destMap'), {
-//         center: mapCenter,
-//         zoom: 15
-//     });
+    map = new google.maps.Map(document.getElementById('destMap'), {
+        center: mapCenter,
+        zoom: 15
+    });
 
-//     var request = {
-//         query: 'Museum of Contemporary Art Australia',
-//         fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
-//     };
+    var request = {
+        query: 'Museum of Contemporary Art Australia',
+        fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
+    };
 
-//     service = new google.maps.places.PlacesService(map);
-//     service.findPlaceFromQuery(request, callback);
-// }
+    service = new google.maps.places.PlacesService(map);
+    service.findPlaceFromQuery(request, callback);
+}
 
+function callback(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            // createMarker(results[i]);
+            console.log(place)
+        }
+    }
+}
+
+// Only map without all the fun attractions
 function initMap(location) {
     // Figure out how to center on location of airport
     map = new google.maps.Map(document.getElementById('destMap'), {
@@ -165,7 +176,6 @@ function initMap(location) {
         zoom: 8,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
-    console.log(map)
 }
 
 function blank() {
