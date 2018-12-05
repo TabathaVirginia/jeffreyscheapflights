@@ -471,7 +471,6 @@ function makeUserForm(flightId, instanceID, dest) {
 
     $(".userInfoForm").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
 
-    // Add business or pleasure 
 }
 
 function pullAirlines() {

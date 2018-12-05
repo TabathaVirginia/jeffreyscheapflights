@@ -55,7 +55,6 @@ a {
     font-family: 'Comfortaa', cursive;
     padding-bottom: 10px;
     padding-top: 10px;
-    display:inline-block;
     float: right;
     font-size: 15px;
     padding-left: 25px;
@@ -66,11 +65,11 @@ a {
 
 .left-navbar-item {
     font-family: 'Comfortaa', cursive;
-    color: #A3D5FF;
+    color: #6F73D2;
     font-weight: bolder;
     font-size: 15pt;
     float: left;
-    background-color: #7681B3;
+    background-color: #D9F0FF;
     border-radius: 5px;
 }
 
