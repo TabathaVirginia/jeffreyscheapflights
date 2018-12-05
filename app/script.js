@@ -38,28 +38,27 @@ $(document).ready(function () {
         alert("Ticket functionality coming!");
     });
 
-    $("body").on("click", ".buyTicketButton", function (e) {
-        e.preventDefault();
-        $(".in").empty();
-        var flightId = parseInt($(this).attr("flightId"));
+    $("body").on("click", "#submitUserInfo", function () {
         var instanceID = parseInt($(this).attr("instanceID"));
-        var origin = $(this).attr("origin");
-        var dest = $(this).attr("dest")
-        var destLat = airportsMap.get(dest).lat;
-        var destLong = airportsMap.get(dest).long;
-        initPlace(destLat, destLong);
-        // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
-        // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
-        // $(".in").html(confirmationTable);
-        makeUserForm();
-
+        var flightId = parseInt($(this).attr("flightId"));
         var fName = $("#fName").val();
         var mName = $("#mName").val();
-        var lName = $("#lName").val()
-        var age = $("#age").val();
+        var lName = $("#lName").val();
+        var age = parseInt($("#age").val());
         var gender = $("#gender").val();
-
+        if (!(fName && mName && lName && age && gender)) {
+            return;
+        }
+        $(".in").empty();
+        console.log(instanceID)
+        console.log(flightId)
+        console.log(fName)
+        console.log(lName)
         var seat_id = find_seat(flightId);
+        var dest = $(this).attr("dest");
+
+        var destLat = airportsMap.get(dest).lat;
+        var destLong = airportsMap.get(dest).long;
 
         if (seat_id == -1) {
             alert("This flight is filled, sorry ):");
@@ -88,6 +87,21 @@ $(document).ready(function () {
         }).done(function (data) {
             console.log("Ticket purchased!");
         });
+        initPlace(destLat, destLong);
+    })
+
+    $("body").on("click", ".buyTicketButton", function (e) {
+        e.preventDefault();
+        $(".in").empty();
+        var flightId = parseInt($(this).attr("flightId"));
+        var instanceID = parseInt($(this).attr("instanceID"));
+        var origin = $(this).attr("origin");
+        var dest = $(this).attr("dest")
+        // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
+        // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
+        // $(".in").html(confirmationTable);
+        makeUserForm(flightId, instanceID, dest);
+
     })
 });
 
@@ -224,6 +238,7 @@ function login() {
 
 // Skeleton for using places instead of actual map
 function initPlace(lat, long) {
+    $(".map").show();
     var mapCenter = new google.maps.LatLng(lat, long);
 
     map = new google.maps.Map(document.getElementById('destMap'), {
@@ -368,8 +383,23 @@ function purchase_seat(seat_id) {
     });
 }
 
-function makeUserForm() {
+function makeUserForm(flightId, instanceID, dest) {
     $(".in").html("<div class='userInfoForm'></div>");
-    $(".userInfoForm").append("First name: <input type='text' id='fName'></input><br>Middle name: <input type='text' id='mName'></input><br>Last name: <input type='text' id='lName'></input><br>Age: <input type='number' id='age'></input><br>Gender: <input type='text' id='gender'></input><br><button id='submitUserInfoButton'>Submit</button>");
+    var labelsAndFields = $("<div class='labelsAndFields'></div>'");
+    var inputLabelsDiv = $("<div class='userInputLabels'></div>");
+    var inputFieldsDiv = $("<div class='userInputFields'></div>");
+    inputLabelsDiv.append("First name: <br> Middle name: <br> Last name: <br> Age:<br> Gender:<br>");
+    inputFieldsDiv.append("<input type='text' id='fName'></input>");
+    inputFieldsDiv.append("<input type='text' id='mName'></input>");
+    inputFieldsDiv.append("<input type='text' id='lName'></input>");
+    inputFieldsDiv.append("<input type='text' id='age'></input>");
+    inputFieldsDiv.append("<input type='text' id='gender'></input>");
+    labelsAndFields.append(inputLabelsDiv);
+    labelsAndFields.append(inputFieldsDiv);
+
+    $(".userInfoForm").append(labelsAndFields);
+
+    $(".userInfoForm").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
+
     // Add business or pleasure 
 }

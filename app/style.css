@@ -116,3 +116,26 @@ ul {
     width:400pt;
     font-size: 15px;
 }
+
+.userInfoForm{
+    /* display: flex; */
+    justify-content: center;
+}
+
+.userInputLabels{
+    text-align: left;
+}
+
+.userInputFields, .userInputLabel{
+    display:flex;
+    flex-direction: column;
+}
+
+.labelsAndFields{
+    display:flex;
+    justify-content: center;
+}
+
+.input{
+    margin:5pt;
+}
