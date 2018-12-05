@@ -2,6 +2,7 @@
 var origin = "";
 var dest = "";
 var date;
+var instanceIDs = [];
 var flightIDs = [];
 var flightInfo = [];
 var airports = [];
@@ -39,6 +40,7 @@ $(document).ready(function () {
     $("body").on("click", ".buyTicketButton", function () {
         $(".in").empty();
         var flightId = parseInt($(this).attr("flightId"));
+        var instanceID = parseInt($(this).attr("instanceID"));
         var origin = $(this).attr("origin");
         var dest = $(this).attr("dest")
         var tableHTML = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
@@ -48,25 +50,25 @@ $(document).ready(function () {
         var mName = prompt("Please enter your middle name.", "Danger");
         var lName = prompt("Please enter your last name.", "Meyer-Patel");
         var age = prompt("What's your age?", "74");
-        var gender = prompt("What's your gender?", "Other");
-
+        var gender = prompt("What's your gender?", "male");
+        console.log(instanceID);
         $.ajax({
             url: 'http://comp426.cs.unc.edu:3001/tickets',
             type: 'POST',
+            xhrFields: { withCredentials: true },
             data: {
                 ticket: {
-                    first_name: fName,
-                    middle_name: mName,
-                    last_name: lName,
-                    age: age,
-                    gender: gender,
-                    is_purchased: true,
-                    price_paid: "100.00",
-                    instance_id: flightId,
-                    seat_id: 15
-                },
-            },
-            xhrFields: { withCredentials: true }
+                    first_name:   fName,
+                    middle_name:  mName,
+                    last_name:    lName,
+                    age:          age,
+                    gender:       gender,
+                    is_purchased: "true",
+                    price_paid:   "100.00",
+                    instance_id:  instanceID,
+                    seat_id:      "21"
+                  }
+            }
         }).done(function (data) {
             console.log("Ticket purchased!");
         });
@@ -182,7 +184,7 @@ function display() {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
             empty = false;
-            d += "<tr><th>"+flightIDs[i]+"</th><th>"+info[0]+"</th><th>"+info[4]+"</th><th>"+info[8]+"</th><th>"+info[9]+"<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + 1 + "destLong=" + 2 + ">Buy Ticket</th></tr>";
+            d += "<tr><th>"+flightIDs[i]+"</th><th>"+info[0]+"</th><th>"+info[4]+"</th><th>"+info[8]+"</th><th>"+info[9]+"<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " instanceID="+instanceIDs[i]+" origin=" + origin + " dest=" + dest + " destLat=" + 1 + "destLong=" + 2 + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -243,10 +245,10 @@ function loadDate(d) {
         xhrFields: { withCredentials: true },
         type: "GET",
         async: false,
-        success: function (data) {
-            $("#loading").html("<p>Loading...</p>");
-            $(".in").hide();
-        },
+        // success: function (data) {
+        //     $("#loading").html("<p>Loading...</p>");
+        //     $(".in").hide();
+        // },
         url: "http://comp426.cs.unc.edu:3001/airports"
     }).done(function (data) {
         for (var i = 0; i < data.length; i++) {
@@ -271,6 +273,7 @@ function loadDate(d) {
         },
         url: "http://comp426.cs.unc.edu:3001/instances?filter[date]=" + d
     }).done(function (data) {
+        instanceIDs = data.map(entry => entry.id);
         flightIDs = data.map(entry => entry.flight_id);
         for (var i = 0; i < flightIDs.length; i++) {
             (function (i) {
