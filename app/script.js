@@ -12,6 +12,7 @@ var departureCache = [];
 var map;
 var service;
 var infoWindow;
+var seats;
 
 
 // JQuery Logic
@@ -56,22 +57,31 @@ $(document).ready(function () {
         var age = prompt("What's your age?", "74");
         var gender = prompt("What's your gender?", "male");
         console.log(instanceID);
+        var seat_id = find_seat(flightId);
+
+        if (seat_id == -1) {
+            alert("This flight is filled, sorry ):");
+            return;
+        }
+
         $.ajax({
             url: 'http://comp426.cs.unc.edu:3001/tickets',
             type: 'POST',
-            xhrFields: { withCredentials: true },
+            xhrFields: {
+                withCredentials: true
+            },
             data: {
                 ticket: {
-                    first_name:   fName,
-                    middle_name:  mName,
-                    last_name:    lName,
-                    age:          age,
-                    gender:       gender,
+                    first_name: fName,
+                    middle_name: mName,
+                    last_name: lName,
+                    age: age,
+                    gender: gender,
                     is_purchased: "true",
-                    price_paid:   "100.00",
-                    instance_id:  instanceID,
-                    seat_id:      "21"
-                  }
+                    price_paid: "100.00",
+                    instance_id: instanceID,
+                    seat_id: seat_id
+                }
             }
         }).done(function (data) {
             console.log("Ticket purchased!");
@@ -183,7 +193,7 @@ function display() {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
             empty = false;
-            d += "<tr><th>"+flightIDs[i]+"</th><th>"+info[0]+"</th><th>"+info[4]+"</th><th>"+info[8]+"</th><th>"+info[9]+"<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " instanceID="+instanceIDs[i]+" origin=" + origin + " dest=" + dest + " destLat=" + 1 + "destLong=" + 2 + ">Buy Ticket</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[4] + "</th><th>" + info[8] + "</th><th>" + info[9] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " instanceID=" + instanceIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + 1 + "destLong=" + 2 + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -242,7 +252,9 @@ function callback(results, status) {
 function loadDate(d) {
     //Get airports.
     $.ajax({
-        xhrFields: { withCredentials: true },
+        xhrFields: {
+            withCredentials: true
+        },
         type: "GET",
         async: false,
         // success: function (data) {
@@ -265,7 +277,9 @@ function loadDate(d) {
     });
 
     $.ajax({
-        xhrFields: { withCredentials: true },
+        xhrFields: {
+            withCredentials: true
+        },
         type: "GET",
         async: false,
         success: function (data) {
@@ -278,7 +292,9 @@ function loadDate(d) {
         for (var i = 0; i < flightIDs.length; i++) {
             (function (i) {
                 $.ajax({
-                    xhrFields: { withCredentials: true },
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     type: "GET",
                     async: false,
                     url: "http://comp426.cs.unc.edu:3001/flights/" + flightIDs[i]
@@ -288,8 +304,9 @@ function loadDate(d) {
                     var dep_time = (data.departs_at).substring(11, 16);
                     var arr_time = (data.arrives_at).substring(11, 16);
                     var flightNum = data.number;
+                    var planeId = data.plane_id;
                     var airline = data.airline_id;
-                    flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline;
+                    flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline + ";" + planeId;
                     var x = arr.split(";");
                     var y = dept.split(";");
                     var xHas = false;
@@ -314,5 +331,52 @@ function loadDate(d) {
             })(i);
         }
         handleOrigin();
+    });
+}
+
+function find_seat(flight_id) {
+    let _find_seat = function (data) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].plane_id == flightInfo[flight_id].split(";")[6]) {
+                if (data.info == "") {
+                    console.log("Here", data[i]);
+                    purchase_seat(data[i].id);
+                    return data[i].id;
+                }
+            }
+        }
+        return -1;
+    }
+
+    if (seats != undefined) {
+        return _find_seat(seats);
+    }
+
+    $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        type: "GET",
+        async: false,
+        url: "http://comp426.cs.unc.edu:3001/seats"
+    }).done(function (data) {
+        seats = data;
+        console.log("pulled seat data!");
+        return _find_seat(data);
+    });
+}
+
+function purchase_seat(seat_id) {
+    $.ajax({
+        url: 'http://comp426.cs.unc.edu:3001/seats/' + seat_id,
+        type: 'PUT',
+        xhrFields: {
+            withCredentials: true
+        },
+        data: {
+            info: "purchased"
+        }
+    }).done(function (data) {
+        console.log("seat purchased!");
     });
 }
