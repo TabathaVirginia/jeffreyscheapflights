@@ -41,9 +41,6 @@ $(document).ready(function () {
         var flightId = parseInt($(this).attr("flightId"));
         var origin = $(this).attr("origin");
         var dest = $(this).attr("dest")
-        console.log(dest)
-        console.log(airportsMap);
-        console.log(airportsMap.get(dest))
         var destLat = airportsMap.get(dest).lat;
         var destLong = airportsMap.get(dest).long;
         initPlace(destLat, destLong);
@@ -83,6 +80,7 @@ function handleOrigin() {
     $(".in").show();
     $("#loading").html("<p></p>");
     $(".in").html("<p>Where are you flying from? Please input an airport code.</p><input id='originInput' type='text'>");
+    $("#originInput").focus();
     $('#originInput').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
@@ -217,6 +215,7 @@ function login() {
 
 // Skeleton for using places instead of actual map
 function initPlace(lat, long) {
+    // $("")
     var mapCenter = new google.maps.LatLng(lat, long);
 
     map = new google.maps.Map(document.getElementById('destMap'), {
@@ -317,15 +316,5 @@ function loadDate(d) {
             })(i);
         }
         handleOrigin();
-    });
-}
-
-// Only map without all the fun attractions
-function initMap(location) {
-    // Figure out how to center on location of airport
-    map = new google.maps.Map(document.getElementById('destMap'), {
-        center: { lat: 35.9132, lng: -79.0558 },
-        zoom: 8,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
 }
