@@ -7,6 +7,7 @@ var flightIDs = [];
 var flightInfo = [];
 var airports = [];
 var airportsMap = new Map();
+var airlines = [];
 var arrivingCache = [];
 var departureCache = [];
 var map;
@@ -45,7 +46,7 @@ $(document).ready(function () {
             $(".in").empty();
             var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th></tr>";
             for (var i = 0; i < data.length; i++) {
-                var name = data[i].first_name + " " + data[i].middle_name.substring(1, 2) + ". " + data[i].last_name;
+                var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
                 (function (i) {
                     $.ajax({
                         url: 'http://comp426.cs.unc.edu:3001/instances/' + data[i].instance_id,
@@ -222,11 +223,10 @@ function display() {
     var empty = true;
     var d = "<table><tr><th>Flight ID</th><th>Origin</th><th>Arrives At</th><th>Leaving At</th><th>Arrives</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
-        console.log(flightInfo[flightIDs[i]]);
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
             empty = false;
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[4] + "</th><th>" + info[8] + "</th><th>" + info[9] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " instanceID=" + instanceIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + 1 + "destLong=" + 2 + ">Buy Ticket</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[4] + "</th><th>" + info[8] + "</th><th>" + info[9] + "<th><button class='buyTicketButton' flightId="+flightIDs[i]+" instanceID="+instanceIDs[i]+" origin="+origin+" dest="+dest+">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -282,10 +282,6 @@ function loadDate(d) {
         },
         type: "GET",
         async: false,
-        // success: function (data) {
-        //     $("#loading").html("<p>Loading...</p>");
-        //     $(".in").hide();
-        // },
         url: "http://comp426.cs.unc.edu:3001/airports"
     }).done(function (data) {
         for (var i = 0; i < data.length; i++) {
@@ -299,6 +295,20 @@ function loadDate(d) {
         }
     });
 
+    //Get airlines
+    $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        type: "GET",
+        async: false,
+        url: "http://comp426.cs.unc.edu:3001/airlines"
+    }).done(function (data) {
+        for (var i = 0; i < data.length; i++) {
+            airports[data[i].id] = data[i].name;
+        }
+        console.log(airports);
+    });
     $.ajax({
         xhrFields: {
             withCredentials: true
