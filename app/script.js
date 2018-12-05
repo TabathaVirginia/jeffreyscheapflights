@@ -159,8 +159,8 @@ $(document).ready(function () {
         }).done(function (data) {
             console.log("Ticket purchased!");
         });
-        var confirmationTable = "<table><tr><th>Flight</th><th>From</th><th>To</th></tr>";
-        confirmationTable += "<tr><th>" + flightId + "</th><th>" + origin + "</th><th>" + dest + "</th></table>";
+        var confirmationTable = "<table class='confirmationTable'><tr><th class='confirmationTableEntry'>Flight</th><th class='confirmationTableEntry'>From</th><th class='confirmationTableEntry'>To</th></tr>";
+        confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th></table>";
         $(".in").html(confirmationTable);
         initPlace(destLat, destLong);
     })
