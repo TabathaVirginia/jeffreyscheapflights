@@ -118,6 +118,28 @@ ul {
     font-size: 15px;
 }
 
+.userInfoForm{
+    /* display: flex; */
+    justify-content: center;
+}
+
+.userInputLabels{
+    text-align: left;
+}
+
+.userInputFields, .userInputLabel{
+    display:flex;
+    flex-direction: column;
+}
+
+.labelsAndFields{
+    display:flex;
+    justify-content: center;
+}
+
+.input{
+    margin:5pt;
+}
 footer {
     position: fixed;
     bottom: 0px;
