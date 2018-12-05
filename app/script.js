@@ -48,15 +48,18 @@ $(document).ready(function () {
         var destLat = airportsMap.get(dest).lat;
         var destLong = airportsMap.get(dest).long;
         initPlace(destLat, destLong);
-        var tableHTML = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
-        tableHTML += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
-        $(".in").html(tableHTML);
-        var fName = prompt("Please enter your first name.", "Kenan");
-        var mName = prompt("Please enter your middle name.", "Danger");
-        var lName = prompt("Please enter your last name.", "Meyer-Patel");
-        var age = prompt("What's your age?", "74");
-        var gender = prompt("What's your gender?", "male");
-        console.log(instanceID);
+        // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
+        // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
+        // $(".in").html(confirmationTable);
+        $(".in").html("<div class='userInfoForm'></div>");
+        $(".userInfoForm").append("First name: <input type='text' id='fName'></input> Middle name: <input type='text' id='mName'></input> Last name: <input type='text' id='lName'></input> Age: <input type='number' id='age'></input> Gender: <input type='text' id='gender'></input>");
+
+        var fName = $("#fName").val();
+        var mName = $("#mName").val();
+        var lName = $("#lName").val()
+        var age = $("#age").val();
+        var gender = $("#gender").val();
+
         var seat_id = find_seat(flightId);
 
         if (seat_id == -1) {
