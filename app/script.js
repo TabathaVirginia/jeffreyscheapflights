@@ -96,7 +96,7 @@ function handleOrigin() {
     $('#originInput').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
-            origin = $(this).val();
+            origin = $(this).val().toUpperCase();
             $(".in").empty();
             $(".in").html("<p>Where are you flying to?</p><input id='destInput' type='text'>");
             $("#destInput").focus();
@@ -143,7 +143,7 @@ function handleDest() {
     $("#destInput").keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
-            dest = $(this).val();
+            dest = $(this).val().toUpperCase();
             $(".in").empty();
             $(".in").html("<p>Displaying ajax response...</p>");
             display();
@@ -221,7 +221,6 @@ function login() {
 
 // Skeleton for using places instead of actual map
 function initPlace(lat, long) {
-    // $("")
     var mapCenter = new google.maps.LatLng(lat, long);
 
     map = new google.maps.Map(document.getElementById('destMap'), {
@@ -229,13 +228,6 @@ function initPlace(lat, long) {
         zoom: 15
     });
 
-    // var request = {
-    //     query: 'Museum of Contemporary Art Australia',
-    //     fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
-    // };
-
-    // service = new google.maps.places.PlacesService(map);
-    // service.findPlaceFromQuery(request, callback);
 }
 
 function callback(results, status) {
@@ -270,8 +262,6 @@ function loadDate(d) {
                 lat: data[i].latitude,
                 long: data[i].longitude,
             });
-
-            // console.log("Airport info:" + data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude);
         }
     });
 
