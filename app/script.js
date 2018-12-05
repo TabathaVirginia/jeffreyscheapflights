@@ -37,7 +37,8 @@ $(document).ready(function () {
         alert("Ticket functionality coming!");
     });
 
-    $("body").on("click", ".buyTicketButton", function () {
+    $("body").on("click", ".buyTicketButton", function (e) {
+        e.preventDefault();
         $(".in").empty();
         var flightId = parseInt($(this).attr("flightId"));
         var instanceID = parseInt($(this).attr("instanceID"));
@@ -172,12 +173,6 @@ function handleDest() {
         }
     });
 }
-
-// function printIDs() {
-//     for (var i = 0; i < flightIDs.length; i++) {
-//         console.log("Flight " + flightIDs[i] + ": " + flightInfo[flightIDs[i]]);
-//     }
-// }
 
 function display() {
     $(".in").empty();
