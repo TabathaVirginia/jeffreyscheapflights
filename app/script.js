@@ -176,16 +176,13 @@ function handleDest() {
 function display() {
     $(".in").empty();
     var empty = true;
-    var d = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th><th>Leaving</th><th>Arrives</th><th>Buy Ticket</th></tr>";
+    var d = "<table><tr><th>Flight ID</th><th>Origin</th><th>Arrives At</th><th>Leaving At</th><th>Arrives</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         //console.log(flightInfo[flightIDs[i]]);
         var info = flightInfo[flightIDs[i]].split(";");
-        // //console.log(info);
-        // console.log(origin + " --> " + dest);
-        // console.log(info[0] + " --> " + info[4]);
         if (info[0] === origin && info[4] === dest) {
             empty = false;
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + +" destLong=" + +">Buy Ticket</th></tr>";
+            d += "<tr><th>"+flightIDs[i]+"</th><th>"+info[0]+"</th><th>"+info[4]+"</th><th>"+info[8]+"</th><th>"+info[9]+"<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + 1 + "destLong=" + 2 + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -289,7 +286,6 @@ function loadDate(d) {
                     var arr_time = (data.arrives_at).substring(11, 16);
                     var flightNum = data.number;
                     var airline = data.airline_id;
-                    //console.log(flightIDs[i] + " " + dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline);
                     flightInfo[flightIDs[i]] = dept + ";" + arr + ";" + dep_time + ";" + arr_time + ";" + flightNum + ";" + airline;
                     var x = arr.split(";");
                     var y = dept.split(";");
