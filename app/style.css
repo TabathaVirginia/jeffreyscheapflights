@@ -25,7 +25,7 @@ body {
 #mainTitle {
     display: block;
     margin: 0;
-    padding: 100px;
+    padding: 50px;
     color: #FF3A20;
     background-color: #FFFFF9;
 }
@@ -106,8 +106,13 @@ ul {
     text-align: center;
 }
 
+.mapContainer{
+    margin-top:5pt;
+    display: flex;
+    justify-content: center;
+}
 .map{
-    height:100pt;
-    width:100pt;
+    height:250pt;
+    width:400pt;
     font-size: 15px;
 }
