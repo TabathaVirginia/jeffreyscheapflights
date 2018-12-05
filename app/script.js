@@ -440,19 +440,25 @@ function purchase_seat(seat_id) {
 
 function makeUserForm(flightId, instanceID, dest) {
     $(".in").html("<div class='userInfoForm'></div>");
-    var labelsAndFields = $("<div class='labelsAndFields'></div>'");
-    var inputLabelsDiv = $("<div class='userInputLabels'></div>");
-    var inputFieldsDiv = $("<div class='userInputFields'></div>");
-    inputLabelsDiv.append("First name: <br> Middle name: <br> Last name: <br> Age:<br> Gender:<br>");
-    inputFieldsDiv.append("<input type='text' id='fName'></input>");
-    inputFieldsDiv.append("<input type='text' id='mName'></input>");
-    inputFieldsDiv.append("<input type='text' id='lName'></input>");
-    inputFieldsDiv.append("<input type='text' id='age'></input>");
-    inputFieldsDiv.append("<input type='text' id='gender'></input>");
-    labelsAndFields.append(inputLabelsDiv);
-    labelsAndFields.append(inputFieldsDiv);
+    $(".userInfoForm").append("<table class='userInfoTable'></table>");
+    $(".userInfoTable").append("<tr><td>First Name:</td><td><input type='text' id='fName'></input></td></tr>");
+    $(".userInfoTable").append("<tr><td>Middle Name:</td><td><input type='text' id='mName'></input></td></tr>");
+    $(".userInfoTable").append("<tr><td>Last Name:</td><td><input type='text' id='lName'></input></td></tr>")
+    $(".userInfoTable").append("<tr><td>Age:</td><td><input type='text' id='age'></input></td></tr>");
+    $(".userInfoTable").append("<tr><td>Gender:</td><td><input type='text' id='gender'></input></td></tr>");
+    // var labelsAndFields = $("<div class='labelsAndFields'></div>'");
+    // var inputLabelsDiv = $("<div class='userInputLabels'></div>");
+    // var inputFieldsDiv = $("<div class='userInputFields'></div>");
+    // inputLabelsDiv.append("First name: <br> Middle name: <br> Last name: <br> Age:<br> Gender:<br>");
+    // inputFieldsDiv.append("<input type='text' id='fName'></input>");
+    // inputFieldsDiv.append("<input type='text' id='mName'></input>");
+    // inputFieldsDiv.append("<input type='text' id='lName'></input>");
+    // inputFieldsDiv.append("<input type='text' id='age'></input>");
+    // inputFieldsDiv.append("<input type='text' id='gender'></input>");
+    // labelsAndFields.append(inputLabelsDiv);
+    // labelsAndFields.append(inputFieldsDiv);
 
-    $(".userInfoForm").append(labelsAndFields);
+    // $(".userInfoForm").append(labelsAndFields);
 
     $(".userInfoForm").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
 
@@ -496,7 +502,5 @@ function airlineTable() {
 
 /*Todo
 Fix the user info form
-Fix loading on home screen
 Add to and from to the tickets
-Make different page for a ticket confirmation and my tickets
 */
