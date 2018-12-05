@@ -32,7 +32,7 @@ body {
 
 input {
     background-color: #29339B;
-    color: #6F73D2;
+    color: #83C9F4;
     font-size: 15px;
 }
 .calendar-container{
@@ -100,6 +100,9 @@ a:hover {
 table {
     border-collapse: collapse;
     width: 100%;
+    padding-left: 10px;
+    padding-right:10px;
+    border-radius: 5px;
 }
 
 td, th {
@@ -115,38 +118,37 @@ ul {
     text-align: center;
 }
 
-.mapContainer{
+.mapContainer {
     margin-top:5pt;
     display: flex;
     justify-content: center;
 }
-.map{
+.map {
     display: none;
     height:250pt;
     width:400pt;
     font-size: 15px;
 }
 
-.userInfoForm{
-    /* display: flex; */
+.userInfoForm {
     justify-content: center;
 }
 
-.userInputLabels{
+.userInputLabels {
     text-align: left;
 }
 
-.userInputFields, .userInputLabel{
+.userInputFields, .userInputLabel {
     display:flex;
     flex-direction: column;
 }
 
-.labelsAndFields{
+.labelsAndFields {
     display:flex;
     justify-content: center;
 }
 
-.input{
+.input {
     margin: 5pt;
 }
 

@@ -30,7 +30,7 @@ $(document).ready(function () {
             date = $(this).datepicker('getDate');
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
-            alert("Loading your flights. This may take a few seconds (:");
+            alert("Loading your flights. This may take a few seconds.");
             loadDate(d);
         }
     });
@@ -169,8 +169,7 @@ $(document).ready(function () {
         $(".in").empty();
         var flightId = parseInt($(this).attr("flightId"));
         var instanceID = parseInt($(this).attr("instanceID"));
-        var origin = $(this).attr("origin");
-        var dest = $(this).attr("dest")
+        dest = $(this).attr("dest")
         // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
         // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
         // $(".in").html(confirmationTable);
@@ -180,8 +179,6 @@ $(document).ready(function () {
 });
 
 function handleOrigin() {
-    $(".in").show();
-    $("#loading").html("<p></p>");
     $(".in").html("<p>Where are you flying from? Please input an airport code.</p><input id='originInput' type='text'>");
     $("#originInput").focus();
     $('#originInput').keypress(function (event) {
@@ -359,9 +356,6 @@ function loadDate(d) {
         },
         type: "GET",
         async: false,
-        success: function (data) {
-            $("#loading").html("<p>Bebop</p>");
-        },
         url: "http://comp426.cs.unc.edu:3001/instances?filter[date]=" + d
     }).done(function (data) {
         instanceIDs = data.map(entry => entry.id);
