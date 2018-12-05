@@ -23,6 +23,7 @@ $(document).ready(function () {
             date = $(this).datepicker('getDate');
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
+            alert("Loading your flights. This may take a few seconds (:");
             loadDate(d);
         }
     });
@@ -182,8 +183,10 @@ function display() {
     for (var i = 0; i < flightIDs.length; i++) {
         //console.log(flightInfo[flightIDs[i]]);
         var info = flightInfo[flightIDs[i]].split(";");
-        console.log(origin + " --> " + dest);
-        if (info[0] === origin && info[2] === dest) {
+        // //console.log(info);
+        // console.log(origin + " --> " + dest);
+        // console.log(info[0] + " --> " + info[4]);
+        if (info[0] === origin && info[4] === dest) {
             empty = false;
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
         }
