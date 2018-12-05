@@ -78,8 +78,7 @@ $(document).ready(function () {
         // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
         // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
         // $(".in").html(confirmationTable);
-        $(".in").html("<div class='userInfoForm'></div>");
-        $(".userInfoForm").append("First name: <input type='text' id='fName'></input> Middle name: <input type='text' id='mName'></input> Last name: <input type='text' id='lName'></input> Age: <input type='number' id='age'></input> Gender: <input type='text' id='gender'></input>");
+        makeUserForm();
 
         var fName = $("#fName").val();
         var mName = $("#mName").val();
@@ -394,4 +393,10 @@ function purchase_seat(seat_id) {
     }).done(function (data) {
         console.log("seat purchased!");
     });
+}
+
+function makeUserForm() {
+    $(".in").html("<div class='userInfoForm'></div>");
+    $(".userInfoForm").append("First name: <input type='text' id='fName'></input><br>Middle name: <input type='text' id='mName'></input><br>Last name: <input type='text' id='lName'></input><br>Age: <input type='number' id='age'></input><br>Gender: <input type='text' id='gender'></input><br><button id='submitUserInfoButton'>Submit</button>");
+    // Add business or pleasure 
 }
