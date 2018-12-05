@@ -5,6 +5,7 @@ var date;
 var flightIDs = [];
 var flightInfo = [];
 var airports = [];
+var airportsMap = new Map();
 var arrivingCache = [];
 var departureCache = [];
 var map;
@@ -22,6 +23,7 @@ $(document).ready(function () {
             date = $(this).datepicker('getDate');
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
+            alert("Loading your flights. This may take a few seconds (:");
             loadDate(d);
         }
     });
@@ -64,7 +66,7 @@ $(document).ready(function () {
                     seat_id: 15
                 },
             },
-            xhrFields: {withCredentials: true}
+            xhrFields: { withCredentials: true }
         }).done(function (data) {
             console.log("Ticket purchased!");
         });
@@ -252,12 +254,12 @@ function loadDate(d) {
     }).done(function (data) {
         for (var i = 0; i < data.length; i++) {
             airports[data[i].id] = data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude;
-            // {
-            //     code: data[i].code,
-            //     name: data[i].name,
-            //     lat: data[i].latitude,
-            //     long: data[i].longitude,
-            // }
+            airportsMap.set(data[i.name], {
+                code: data[i].code,
+                name: data[i].name,
+                lat: data[i].latitude,
+                long: data[i].longitude,
+            });
 
             // console.log("Airport info:" + data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude);
         }
