@@ -20,19 +20,8 @@ var seats;
 $(document).ready(function () {
     login();
 
-     //Get airlines
-     $.ajax({
-        xhrFields: {
-            withCredentials: true
-        },
-        type: "GET",
-        async: false,
-        url: "http://comp426.cs.unc.edu:3001/airlines"
-    }).done(function(data) {
-        for (var i = 0; i < data.length; i++) {
-            airlines[data[i].id] = data[i].name;
-        }
-    });
+    //Get airlines
+    pullAirlines();
 
     //Begin taking input.
     $("#dateInput").datepicker({
@@ -57,7 +46,7 @@ $(document).ready(function () {
             xhrFields: {
                 withCredentials: true
             }
-        }).done(function(data) {
+        }).done(function (data) {
             $(".in").empty();
             var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th></tr>";
             for (var i = 0; i < data.length; i++) {
@@ -70,7 +59,7 @@ $(document).ready(function () {
                         xhrFields: {
                             withCredentials: true
                         }
-                    }).done(function(data1) {
+                    }).done(function (data1) {
                         info = data1;
                         d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th></tr>";
                     });
@@ -82,28 +71,45 @@ $(document).ready(function () {
             } else {
                 $(".in").html("<p>Uh oh! Looks like you haven't purchased any tickets yet.</p>");
             }
-            $(".in").append("<br>");
-            $(".in").append("<div id='note'>Make a note about an airline</div>");
 
-            $("#note").click(function(e) {
+            airlineTable();
+
+            $(".in").append("<button id='note'>Make a note about an airline</button>");
+
+            $("#note").click(function (e) {
                 var toNote = prompt("Enter the name of the airline");
                 var found = false;
+                var airID = 0;
                 for (var i = 0; i < airlines.length; i++) {
                     if (airlines[i] == toNote) {
                         found = true;
+                        airID = i;
                     }
                 }
                 if (!found) {
                     alert("Airline not found");
                 } else {
-                    alert("Airline found");
+                    var note = prompt("Enter your comment!");
+                    $.ajax({
+                        url: 'http://comp426.cs.unc.edu:3001/airlines/' + airID,
+                        type: 'PUT',
+                        async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        data: {
+                            airline: {
+                                info: note
+                            }
+                        }
+                    }).done(function (data) {
+                        airlines[airID] += ";" + note;
+                        pullAirlines();
+                        airlineTable();
+                    });
                 }
             });
         });
-
-        // $("#note").click(function(e) {
-        //     alert("hello!");
-        // });
     });
 
     $("body").on("click", "#submitUserInfo", function () {
@@ -276,7 +282,7 @@ function display() {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
             empty = false;
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[4] + "</th><th>" + info[8] + "</th><th>" + info[9] + "<th><button class='buyTicketButton' flightId="+flightIDs[i]+" instanceID="+instanceIDs[i]+" origin="+origin+" dest="+dest+">Buy Ticket</th></tr>";
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[4] + "</th><th>" + info[8] + "</th><th>" + info[9] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " instanceID=" + instanceIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -466,4 +472,40 @@ function makeUserForm(flightId, instanceID, dest) {
     $(".userInfoForm").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
 
     // Add business or pleasure 
+}
+
+function pullAirlines() {
+    $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        type: "GET",
+        async: false,
+        url: "http://comp426.cs.unc.edu:3001/airlines"
+    }).done(function (data) {
+        for (var i = 0; i < data.length; i++) {
+            airlines[data[i].id] = data[i].name + ";" + data[i].info;
+        }
+    });
+}
+
+function airlineTable() {
+    $(".in").append("<div id='air'></div>");
+    var empty = true;
+    var d = "<table><tr><th>Airline</th><th>Notes</th></tr>";
+    for (var i = 0; i < airlines.length; i++) {
+        if (airlines[i] != undefined) {
+            var info = airlines[i].split(";");
+            if (info.length > 1) {
+                if (info[info.length-1] != "null") {
+                    empty = false;
+                    d += "<tr><th>" + info[0] + "</th><th>" + info[info.length-1] + "</th></tr>";  
+                }
+            }
+        }
+    }
+    d += "</table>";
+    if (!empty) {
+        $("#air").append(d);
+    }
 }
