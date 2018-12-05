@@ -188,11 +188,7 @@ function display() {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
             empty = false;
-<<<<<<< HEAD
             d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[2] + "</th><th>" + info[4] + "</th><th>" + info[5] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
-=======
-            d += "<tr><th>"+flightIDs[i]+"</th><th>"+info[0]+"</th><th>"+info[4]+"</th><th>"+info[8]+"</th><th>"+info[9]+"<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " origin=" + origin + " dest=" + dest + " destLat=" + 1 + "destLong=" + 2 + ">Buy Ticket</th></tr>";
->>>>>>> 28f03b786374cc47143609f5f49fdd5dbd1ad163
         }
     }
     d += "</table>";
