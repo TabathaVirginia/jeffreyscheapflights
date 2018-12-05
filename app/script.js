@@ -19,6 +19,21 @@ var seats;
 // JQuery Logic
 $(document).ready(function () {
     login();
+
+     //Get airlines
+     $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        type: "GET",
+        async: false,
+        url: "http://comp426.cs.unc.edu:3001/airlines"
+    }).done(function(data) {
+        for (var i = 0; i < data.length; i++) {
+            airlines[data[i].id] = data[i].name;
+        }
+    });
+
     //Begin taking input.
     $("#dateInput").datepicker({
         format: "yyyy-mm-dd",
@@ -67,7 +82,28 @@ $(document).ready(function () {
             } else {
                 $(".in").html("<p>Uh oh! Looks like you haven't purchased any tickets yet.</p>");
             }
+            $(".in").append("<br>");
+            $(".in").append("<div id='note'>Make a note about an airline</div>");
+
+            $("#note").click(function(e) {
+                var toNote = prompt("Enter the name of the airline");
+                var found = false;
+                for (var i = 0; i < airlines.length; i++) {
+                    if (airlines[i] == toNote) {
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    alert("Airline not found");
+                } else {
+                    alert("Airline found");
+                }
+            });
         });
+
+        // $("#note").click(function(e) {
+        //     alert("hello!");
+        // });
     });
 
     $("body").on("click", "#submitUserInfo", function () {
@@ -310,20 +346,7 @@ function loadDate(d) {
         }
     });
 
-    //Get airlines
-    $.ajax({
-        xhrFields: {
-            withCredentials: true
-        },
-        type: "GET",
-        async: false,
-        url: "http://comp426.cs.unc.edu:3001/airlines"
-    }).done(function (data) {
-        for (var i = 0; i < data.length; i++) {
-            airports[data[i].id] = data[i].name;
-        }
-        console.log(airports);
-    });
+    //Grab dates!
     $.ajax({
         xhrFields: {
             withCredentials: true
