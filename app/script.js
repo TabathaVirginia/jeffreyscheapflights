@@ -48,7 +48,6 @@ $(document).ready(function () {
         var destLat = airportsMap.get(dest).lat;
         var destLong = airportsMap.get(dest).long;
         initPlace(destLat, destLong);
-<<<<<<< HEAD
         // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
         // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
         // $(".in").html(confirmationTable);
@@ -61,16 +60,6 @@ $(document).ready(function () {
         var age = $("#age").val();
         var gender = $("#gender").val();
 
-=======
-        var tableHTML = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
-        tableHTML += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
-        $(".in").html(tableHTML);
-        var fName = prompt("Please enter your first name.", "Kenan");
-        var mName = prompt("Please enter your middle name.", "Danger");
-        var lName = prompt("Please enter your last name.", "Meyer-Patel");
-        var age = prompt("What's your age?", "74");
-        var gender = prompt("What's your gender?", "male");
->>>>>>> 165b878b2f850accecff7d085d95dd61bfaf6368
         var seat_id = find_seat(flightId);
 
         if (seat_id == -1) {
@@ -351,7 +340,7 @@ function find_seat(flight_id) {
             seats = data;
         });
     }
-    
+
     for (let i = 0; i < seats.length; i++) {
         if (seats[i].plane_id == flightInfo[flight_id].split(";")[12]) {
             if (!seats.info) {
