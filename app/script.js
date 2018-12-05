@@ -48,6 +48,7 @@ $(document).ready(function () {
         var destLat = airportsMap.get(dest).lat;
         var destLong = airportsMap.get(dest).long;
         initPlace(destLat, destLong);
+<<<<<<< HEAD
         // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
         // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
         // $(".in").html(confirmationTable);
@@ -60,6 +61,16 @@ $(document).ready(function () {
         var age = $("#age").val();
         var gender = $("#gender").val();
 
+=======
+        var tableHTML = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
+        tableHTML += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
+        $(".in").html(tableHTML);
+        var fName = prompt("Please enter your first name.", "Kenan");
+        var mName = prompt("Please enter your middle name.", "Danger");
+        var lName = prompt("Please enter your last name.", "Meyer-Patel");
+        var age = prompt("What's your age?", "74");
+        var gender = prompt("What's your gender?", "male");
+>>>>>>> 165b878b2f850accecff7d085d95dd61bfaf6368
         var seat_id = find_seat(flightId);
 
         if (seat_id == -1) {
@@ -328,35 +339,28 @@ function loadDate(d) {
 }
 
 function find_seat(flight_id) {
-    let _find_seat = function (data) {
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].plane_id == flightInfo[flight_id].split(";")[6]) {
-                if (data.info == "") {
-                    console.log("Here", data[i]);
-                    purchase_seat(data[i].id);
-                    return data[i].id;
-                }
+    if (seats == undefined) {
+        $.ajax({
+            xhrFields: {
+                withCredentials: true
+            },
+            type: "GET",
+            async: false,
+            url: "http://comp426.cs.unc.edu:3001/seats"
+        }).done(function (data) {
+            seats = data;
+        });
+    }
+    
+    for (let i = 0; i < seats.length; i++) {
+        if (seats[i].plane_id == flightInfo[flight_id].split(";")[12]) {
+            if (!seats.info) {
+                purchase_seat(seats[i].id);
+                return seats[i].id;
             }
         }
-        return -1;
     }
-
-    if (seats != undefined) {
-        return _find_seat(seats);
-    }
-
-    $.ajax({
-        xhrFields: {
-            withCredentials: true
-        },
-        type: "GET",
-        async: false,
-        url: "http://comp426.cs.unc.edu:3001/seats"
-    }).done(function (data) {
-        seats = data;
-        console.log("pulled seat data!");
-        return _find_seat(data);
-    });
+    return -1;
 }
 
 function purchase_seat(seat_id) {
@@ -367,7 +371,9 @@ function purchase_seat(seat_id) {
             withCredentials: true
         },
         data: {
-            info: "purchased"
+            "seat": {
+                "info": "purchased",
+            }
         }
     }).done(function (data) {
         console.log("seat purchased!");
