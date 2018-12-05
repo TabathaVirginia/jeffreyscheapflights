@@ -43,18 +43,22 @@ $(document).ready(function () {
             }
         }).done(function(data) {
             $(".in").empty();
-            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>From</th><th>To</th><th>Date</th></tr>";
+            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th></tr>";
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(1, 2) + ". " + data[i].last_name;
-                var info = [];
-                for (var j = 0; j < instanceIDs.length; j++) {
-                    if (instanceIDs[j] == data[i].instance_id) {
-                        console.log(flightIDs[j]);
-                        info = flightInfo[flightIDs[j]];
-                    }
-                }
-                console.log(info);
-                d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + "From" + "</th><th>" + "To" + "</th></tr>";
+                (function (i) {
+                    $.ajax({
+                        url: 'http://comp426.cs.unc.edu:3001/instances/' + data[i].instance_id,
+                        type: 'GET',
+                        async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        }
+                    }).done(function(data1) {
+                        info = data1;
+                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th></tr>";
+                    });
+                })(i);
             }
             d += "</table>";
             if (data.length != 0) {
