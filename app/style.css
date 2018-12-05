@@ -26,6 +26,9 @@ body {
 .in {
     color: #6F73D2;
     font-size: 25px;
+    text-align:center;
+    width:100%;
+    margin: 0 auto;
 }
 
 #mainTitle {
@@ -136,9 +139,16 @@ ul {
     font-size: 15px;
 }
 
-.userInfoForm {
-    justify-content: center;
+/* .userInfoForm {
+    text-align: center;
     width: 50%;
+    margin:0;
+} */
+
+.userInfoTable{
+    width:50%;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .userInputLabels {
@@ -165,10 +175,10 @@ footer {
     font-size: 13px;
     color: #fffff9;
     padding-top: 40px;
-    
     position: fixed;
     left: 0;
     bottom: 0;
     height: 75px;
     width: 100%;
+    z-index: 1;
 }

@@ -439,8 +439,8 @@ function purchase_seat(seat_id) {
 }
 
 function makeUserForm(flightId, instanceID, dest) {
-    $(".in").html("<div class='userInfoForm'></div>");
-    $(".userInfoForm").append("<table class='userInfoTable'></table>");
+    // $(".in").html("<div class='userInfoForm'></div>");
+    $(".in").append("<table class='userInfoTable'></table>");
     $(".userInfoTable").append("<tr><td>First Name:</td><td><input type='text' id='fName'></input></td></tr>");
     $(".userInfoTable").append("<tr><td>Middle Name:</td><td><input type='text' id='mName'></input></td></tr>");
     $(".userInfoTable").append("<tr><td>Last Name:</td><td><input type='text' id='lName'></input></td></tr>")
@@ -460,7 +460,7 @@ function makeUserForm(flightId, instanceID, dest) {
 
     // $(".userInfoForm").append(labelsAndFields);
 
-    $(".userInfoForm").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
+    $(".in").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
 
 }
 
