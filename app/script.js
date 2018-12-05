@@ -40,6 +40,7 @@ $(document).ready(function () {
     });
 
     $("#goToTickets").click(function (e) {
+        $(".map").hide();
         $.ajax({
             url: 'http://comp426.cs.unc.edu:3001/tickets',
             type: 'GET',
@@ -124,10 +125,6 @@ $(document).ready(function () {
             return;
         }
         $(".in").empty();
-        console.log(instanceID)
-        console.log(flightId)
-        console.log(fName)
-        console.log(lName)
         var seat_id = find_seat(flightId);
         var dest = $(this).attr("dest");
 
@@ -161,6 +158,9 @@ $(document).ready(function () {
         }).done(function (data) {
             console.log("Ticket purchased!");
         });
+        var confirmationTable = "<table><tr><th>Flight</th><th>From</th><th>To</th></tr>";
+        confirmationTable += "<tr><th>" + flightId + "</th><th>" + origin + "</th><th>" + dest + "</th></table>";
+        $(".in").html(confirmationTable);
         initPlace(destLat, destLong);
     })
 
@@ -170,9 +170,6 @@ $(document).ready(function () {
         var flightId = parseInt($(this).attr("flightId"));
         var instanceID = parseInt($(this).attr("instanceID"));
         dest = $(this).attr("dest")
-        // var confirmationTable = "<table><tr><th>Flight</th><th>Destination</th><th>Arrival</th></tr>";
-        // confirmationTable += "<tr><th>" + flightId + "</th><th>" + dest + "</th><th>" + origin + "</th></table>";
-        // $(".in").html(confirmationTable);
         makeUserForm(flightId, instanceID, dest);
 
     })
@@ -316,16 +313,6 @@ function initPlace(lat, long) {
         zoom: 15
     });
 
-}
-
-function callback(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-            // createMarker(results[i]);
-            // console.log(place)
-        }
-    }
 }
 
 function loadDate(d) {
@@ -490,9 +477,9 @@ function airlineTable() {
         if (airlines[i] != undefined) {
             var info = airlines[i].split(";");
             if (info.length > 1) {
-                if (info[info.length-1] != "null") {
+                if (info[info.length - 1] != "null") {
                     empty = false;
-                    d += "<tr><th>" + info[0] + "</th><th>" + info[info.length-1] + "</th></tr>";  
+                    d += "<tr><th>" + info[0] + "</th><th>" + info[info.length - 1] + "</th></tr>";
                 }
             }
         }
@@ -502,3 +489,10 @@ function airlineTable() {
         $("#air").append(d);
     }
 }
+
+/*Todo
+Fix the user info form
+Fix loading on home screen
+Add to and from to the tickets
+Make different page for a ticket confirmation and my tickets
+*/
