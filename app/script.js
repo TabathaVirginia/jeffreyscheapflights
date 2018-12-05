@@ -126,7 +126,7 @@ $(document).ready(function () {
             return;
         }
         $(".in").empty();
-        var seat_id = find_seat(flightId);
+        var seat_id = find_seat(flightId, instanceID);
         var dest = $(this).attr("dest");
 
         var destLat = airportsMap.get(dest).lat;
@@ -396,7 +396,7 @@ function loadDate(d) {
     });
 }
 
-function find_seat(flight_id) {
+function find_seat(flight_id, instance_id) {
     if (seats == undefined) {
         $.ajax({
             xhrFields: {
@@ -413,15 +413,27 @@ function find_seat(flight_id) {
     for (let i = 0; i < seats.length; i++) {
         if (seats[i].plane_id == flightInfo[flight_id].split(";")[12]) {
             if (!seats.info) {
-                purchase_seat(seats[i].id);
+                purchase_seat(seats[i].id, instance_id, seats[i].info);
                 return seats[i].id;
+            } else {
+                let instances = seats.split(";");
+                let purchased = false;
+                for(let j = 0; j < instances.length; j++){
+                    if(instances[j] == instance_id){
+                        purchased = true;
+                    }
+                }
+                if(!purchased){
+                    purchase_seat(seats[i].id, instance_id, seats[i].info);
+                    return seats[i].id;
+                }
             }
         }
     }
     return -1;
 }
 
-function purchase_seat(seat_id) {
+function purchase_seat(seat_id, instance_id, info) {
     $.ajax({
         url: 'http://comp426.cs.unc.edu:3001/seats/' + seat_id,
         type: 'PUT',
@@ -430,7 +442,7 @@ function purchase_seat(seat_id) {
         },
         data: {
             "seat": {
-                "info": "purchased",
+                "info": info + ";" + instance_id,
             }
         }
     }).done(function (data) {
