@@ -12,13 +12,13 @@ html, body {
 }
 
 body {
-    background-color: #74A4BC;
-    font-family: "Lucida Console", Monaco, monospot;
+    background-color: #A3D5FF;
+    font-family: 'Comfortaa', cursive;
     text-align: center;
 }
 
 .in {
-    color: #F1FEC6;
+    color: #6F73D2;
     font-size: 25px;
 }
 
@@ -26,13 +26,13 @@ body {
     display: block;
     margin: 0;
     padding: 50px;
-    color: #FF3A20;
-    background-color: #FFFFF9;
+    color: #83C9F4;
+    background-color: #6F73D2;
 }
 
 input {
     background-color: #29339B;
-    color: #F1FEC6;
+    color: #6F73D2;
     font-size: 15px;
 }
 .calendar-container{
@@ -43,7 +43,6 @@ input {
 #dateInput {
     display: inline-block;
     font-size: 15px;
-/*    padding-left: 40%;*/
     margin-left: auto;
     margin-right: auto;
 }
@@ -53,24 +52,25 @@ a {
 }
 
 .navbar-item {
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-family: 'Comfortaa', cursive;
     padding-bottom: 10px;
     padding-top: 10px;
     display:inline-block;
+    float: right;
     font-size: 15px;
-    text-align: center;
     padding-left: 25px;
     padding-right: 25px;
     height: 100%;
+    color: #A3D5FF;
 }
 
 .left-navbar-item {
-    font-family: "Lucida Console", Monaco, monospot;
-    color: #FF3A20;
+    font-family: 'Comfortaa', cursive;
+    color: #A3D5FF;
     font-weight: bolder;
     font-size: 15pt;
     float: left;
-    background-color: #a9c1bd;
+    background-color: #7681B3;
     border-radius: 5px;
 }
 
@@ -82,7 +82,7 @@ a:hover {
 .navbar {
     top: 0;
     position: sticky;
-    background-color: #7A918D;
+    background-color: #7681B3;
     text-align: center;
     height: 60px;
     padding: 10px;
@@ -138,17 +138,17 @@ ul {
 }
 
 .input{
-    margin:5pt;
+    margin: 5pt;
 }
+
 footer {
     position: fixed;
     bottom: 0px;
     width: 100%;
-    background-color: #7A918D;
+    background-color: #7681B3;
     text-align: center;
     height: 50px;
     font-size: 13px;
-    font-family: Roboto,sans-serif;
     color: #fffff9;
     padding-top: 20px;
 }
