@@ -444,7 +444,7 @@ function makeUserForm(flightId, instanceID, dest) {
     $(".userInfoTable").append("<tr><td>First Name:</td><td class='userInputField'><input type='text' id='fName'></input></td></tr>");
     $(".userInfoTable").append("<tr><td>Middle Name:</td><td class='userInputField'><input type='text' id='mName'></input></td></tr>");
     $(".userInfoTable").append("<tr><td>Last Name:</td><td class='userInputField'><input type='text' id='lName'></input></td></tr>")
-    $(".userInfoTable").append("<tr><td>Age:</td><td class='userInputField'><input type='text' id='age'></input></td></tr>");
+    $(".userInfoTable").append("<tr><td>Age:</td><td class='userInputField'><input type='number' id='age'></input></td></tr>");
     $(".userInfoTable").append("<tr><td>Gender:</td><td class='userInputField'><input type='text' id='gender'></input></td></tr>");
 
     $(".in").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
