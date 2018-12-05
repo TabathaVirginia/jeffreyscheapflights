@@ -289,12 +289,8 @@ function display() {
     if (!empty) {
         $(".in").html(d);
     } else {
-        $(".in").html("<p>Uh oh! Looks like no flights match that date and destination-origin combo. Please try again.</p><button class='retry' onClick='retry()'>Retry</button>");
+        $(".in").html("<p>Uh oh! Looks like no flights match that date and destination-origin combo. Please try again.</p><button class='retry' onClick='handleOrigin()'>Retry</button><br><button class='retry' onClick='location.reload()'>Start Over</button>");
     }
-}
-
-function retry() {
-    handleOrigin();
 }
 
 function login() {
