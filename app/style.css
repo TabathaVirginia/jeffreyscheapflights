@@ -63,6 +63,16 @@ a {
     color: #A3D5FF;
 }
 
+button {
+    font-family: 'Comfortaa', cursive;
+    color: #6F73D2;
+    font-weight: bolder;
+    font-size: 15pt;
+    background-color: #D9F0FF;
+    border-radius: 5px;
+    text-align: center;
+}
+
 .left-navbar-item {
     font-family: 'Comfortaa', cursive;
     color: #6F73D2;
