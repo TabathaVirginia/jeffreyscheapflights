@@ -41,6 +41,9 @@ $(document).ready(function () {
         var flightId = parseInt($(this).attr("flightId"));
         var origin = $(this).attr("origin");
         var dest = $(this).attr("dest")
+        console.log(dest)
+        console.log(airportsMap);
+        console.log(airportsMap.get(dest))
         var destLat = airportsMap.get(dest).lat;
         var destLong = airportsMap.get(dest).long;
         initPlace(destLat, destLong);
@@ -257,7 +260,7 @@ function loadDate(d) {
     }).done(function (data) {
         for (var i = 0; i < data.length; i++) {
             airports[data[i].id] = data[i].code + ";" + data[i].name + ";" + data[i].latitude + ";" + data[i].longitude;
-            airportsMap.set(data[i.name], {
+            airportsMap.set(data[i].code, {
                 code: data[i].code,
                 name: data[i].name,
                 lat: data[i].latitude,
