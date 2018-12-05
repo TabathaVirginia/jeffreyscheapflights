@@ -112,6 +112,7 @@ ul {
     justify-content: center;
 }
 .map{
+    display: none;
     height:250pt;
     width:400pt;
     font-size: 15px;
@@ -138,4 +139,16 @@ ul {
 
 .input{
     margin:5pt;
+}
+footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: #7A918D;
+    text-align: center;
+    height: 75px;
+    font-size: 13px;
+    font-family: Roboto,sans-serif;
+    color: #fffff9;
+    padding-top: 50px;
 }

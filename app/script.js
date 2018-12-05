@@ -35,7 +35,38 @@ $(document).ready(function () {
     });
 
     $("#goToTickets").click(function (e) {
-        alert("Ticket functionality coming!");
+        $.ajax({
+            url: 'http://comp426.cs.unc.edu:3001/tickets',
+            type: 'GET',
+            xhrFields: {
+                withCredentials: true
+            }
+        }).done(function(data) {
+            $(".in").empty();
+            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th></tr>";
+            for (var i = 0; i < data.length; i++) {
+                var name = data[i].first_name + " " + data[i].middle_name.substring(1, 2) + ". " + data[i].last_name;
+                (function (i) {
+                    $.ajax({
+                        url: 'http://comp426.cs.unc.edu:3001/instances/' + data[i].instance_id,
+                        type: 'GET',
+                        async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        }
+                    }).done(function(data1) {
+                        info = data1;
+                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th></tr>";
+                    });
+                })(i);
+            }
+            d += "</table>";
+            if (data.length != 0) {
+                $(".in").html(d);
+            } else {
+                $(".in").html("<p>Uh oh! Looks like you haven't purchased any tickets yet.</p>");
+            }
+        });
     });
 
     $("body").on("click", "#submitUserInfo", function () {
@@ -205,7 +236,7 @@ function display() {
     var empty = true;
     var d = "<table><tr><th>Flight ID</th><th>Origin</th><th>Arrives At</th><th>Leaving At</th><th>Arrives</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
-        //console.log(flightInfo[flightIDs[i]]);
+        console.log(flightInfo[flightIDs[i]]);
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
             empty = false;
