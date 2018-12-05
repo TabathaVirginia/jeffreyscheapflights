@@ -30,7 +30,8 @@ $(document).ready(function () {
             date = $(this).datepicker('getDate');
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
-            alert("Loading your flights. This may take a few seconds.");
+            $(".in").html("<p>Loading your flights. This may take a few seconds.</p>");
+            // alert("Loading your flights. This may take a few seconds.");
             loadDate(d);
         }
     });
@@ -322,7 +323,7 @@ function loadDate(d) {
             withCredentials: true
         },
         type: "GET",
-        async: false,
+        async: true,
         url: "http://comp426.cs.unc.edu:3001/airports"
     }).done(function (data) {
         for (var i = 0; i < data.length; i++) {
@@ -342,7 +343,7 @@ function loadDate(d) {
             withCredentials: true
         },
         type: "GET",
-        async: false,
+        async: true,
         url: "http://comp426.cs.unc.edu:3001/instances?filter[date]=" + d
     }).done(function (data) {
         instanceIDs = data.map(entry => entry.id);
@@ -354,7 +355,7 @@ function loadDate(d) {
                         withCredentials: true
                     },
                     type: "GET",
-                    async: false,
+                    async: true,
                     url: "http://comp426.cs.unc.edu:3001/flights/" + flightIDs[i]
                 }).done(function (data) {
                     var dept = airports[data.departure_id];
@@ -385,10 +386,13 @@ function loadDate(d) {
                     if (!yHas) {
                         departureCache.push(y[1] + " (" + y[0] + ")");
                     }
+                    if (i == flightIDs.length - 1) {
+                        handleOrigin();
+                    }
                 });
             })(i);
         }
-        handleOrigin();
+
     });
 }
 
