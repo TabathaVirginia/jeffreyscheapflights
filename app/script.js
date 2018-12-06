@@ -23,6 +23,9 @@ $(document).ready(function () {
     //Get airlines
     pullAirlines();
 
+    //Pull seats
+    grabSeats();
+
     //Begin taking input.
     $("#dateInput").datepicker({
         format: "yyyy-mm-dd",
@@ -55,8 +58,9 @@ $(document).ready(function () {
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
                 var seat = getSeat(data[i].seat_id);
+                console.log(seats);
                 // var 
-                (function (i) {
+                (function (i, seat) {
                     $.ajax({
                         url: 'http://comp426.cs.unc.edu:3001/instances/' + data[i].instance_id,
                         type: 'GET',
@@ -71,11 +75,11 @@ $(document).ready(function () {
                             var origin = flight.split(";")[0];
                             var destination = flight.split(";")[4];
                             // get orgiin and destination from flight
-                            d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + origin + "</th><th>" + destination + "</th><th>$" + data[i].price_paid + "</th><th>" + (seat.row + seat.number) + "</th></tr>";
+                            d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + origin + "</th><th>" + destination + "</th><th>$" + data[i].price_paid + "</th><th>" + (seat.row + "" + seat.number) + "</th></tr>";
                         }
 
                     });
-                })(i);
+                })(i, seat);
             }
             d += "</table>";
             if (data.length != 0) {
@@ -538,4 +542,17 @@ function getSeat(seatID) {
         }
     }
     return -1;
+}
+
+function grabSeats() {
+    $.ajax({
+        xhrFields: {
+            withCredentials: true
+        },
+        type: "GET",
+        async: false,
+        url: "http://comp426.cs.unc.edu:3001/seats"
+    }).done(function (data) {
+        seats = data;
+    });
 }
