@@ -265,7 +265,7 @@ function handleDest() {
             if (pop == false) {
                 $("#destInput").after('<ul id="res"></ul>');
                 pop = true;
-                $("#res").on("click", "li", function() {
+                $("#res").on("click", "li", function () {
                     var curr = $(this).text();
                     $("#destInput").val(curr.substring(curr.length - 4, curr.length - 1));
                     $("#res").empty();
@@ -538,7 +538,3 @@ function getSeat(seatID) {
     }
     return -1;
 }
-
-/*Todo
-
-*/
