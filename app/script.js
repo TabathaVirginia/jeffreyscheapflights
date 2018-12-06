@@ -50,10 +50,11 @@ $(document).ready(function () {
             }
         }).done(function (data) {
             $(".in").empty();
-            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>Price</th></tr>";
+            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>Price</th><th>Seat</th></tr>";
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
                 console.log(data[i]);
+                var seat = getSeat(data[i].seat_id);
                 // var 
                 (function (i) {
                     $.ajax({
@@ -66,7 +67,7 @@ $(document).ready(function () {
                     }).done(function (data1) {
                         info = data1;
                         console.log(data1);
-                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + data[i].price_paid + "</th></tr>";
+                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>$" + data[i].price_paid + "</th><th>" + (seat.row + seat.number) + "</th></tr>";
                     });
                 })(i);
             }
@@ -515,8 +516,17 @@ function makeConfirmationTable(flightId, seat_id, origin, dest, price_paid) {
     }
     var seatName = seatPurchased.row + seatPurchased.number;
     var confirmationTable = "<table class='confirmationTable'><tr><th class='confirmationTableEntry'>Flight</th><th class='confirmationTableEntry'>From</th><th class='confirmationTableEntry'>To</th><th class='confirmationTableEntry'>Seat</th><th class='confirmationTableEntry'>Price</th></tr>";
-    confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th><th class='confirmationTableEntry'>" + seatName + "</th><th class='confirmationTableEntry'>" + price_paid + "</th></table>";
+    confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th><th class='confirmationTableEntry'>" + seatName + "</th><th class='confirmationTableEntry'>$" + price_paid + "</th></table>";
     $(".in").html(confirmationTable);
+}
+
+function getSeat(seatID) {
+    for (let i = 0; i < seats.length; i++) {
+        if (seats[i].id == seatID) {
+            return seats[i];
+        }
+    }
+    return -1;
 }
 
 /*Todo
