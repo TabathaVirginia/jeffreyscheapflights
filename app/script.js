@@ -13,7 +13,7 @@ var departureCache = [];
 var map;
 var service;
 var infoWindow;
-var seats;
+var seats = [];
 
 
 // JQuery Logic
@@ -40,7 +40,9 @@ $(document).ready(function () {
     });
 
     $("#goToTickets").click(function (e) {
+        $("#mainTitle").hide();
         $(".map").hide();
+        $(".in").html("<p>Loading your tickets...</p>");
         $.ajax({
             url: 'http://comp426.cs.unc.edu:3001/tickets',
             type: 'GET',
@@ -49,10 +51,10 @@ $(document).ready(function () {
             }
         }).done(function (data) {
             $(".in").empty();
-            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>Price</th></tr>";
+            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>From</th><th>To</th><th>Price</th><th>Seat</th></tr>";
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
-                //console.log(data[i]);
+                var seat = getSeat(data[i].seat_id);
                 // var 
                 (function (i) {
                     $.ajax({
@@ -64,8 +66,14 @@ $(document).ready(function () {
                         }
                     }).done(function (data1) {
                         info = data1;
-                        //console.log(data1);
-                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + data[i].price_paid + "</th></tr>";
+                        var flight = flightInfo[data1.flight_id];
+                        if (flight) {
+                            var origin = flight.split(";")[0];
+                            var destination = flight.split(";")[4];
+                            // get orgiin and destination from flight
+                            d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + origin + "</th><th>" + destination + "</th><th>$" + data[i].price_paid + "</th><th>" + (seat.row + seat.number) + "</th></tr>";
+                        }
+
                     });
                 })(i);
             }
@@ -275,6 +283,7 @@ function handleDest() {
 }
 
 function display() {
+    $("#mainTitle").hide();
     $(".in").empty();
     var empty = true;
     var d = "<table><tr><th>Flight ID</th><th>From</th><th>To</th><th>Departure Time</th><th>Arrival Time</th><th>Price</th><th>Buy Ticket</th></tr>";
@@ -403,7 +412,7 @@ function loadDate(d) {
 }
 
 function find_seat(flight_id, instance_id) {
-    if (seats == undefined) {
+    if (seats.length == 0) {
         $.ajax({
             xhrFields: {
                 withCredentials: true
@@ -517,11 +526,19 @@ function makeConfirmationTable(flightId, seat_id, origin, dest, price_paid) {
     }
     var seatName = seatPurchased.row + seatPurchased.number;
     var confirmationTable = "<table class='confirmationTable'><tr><th class='confirmationTableEntry'>Flight</th><th class='confirmationTableEntry'>From</th><th class='confirmationTableEntry'>To</th><th class='confirmationTableEntry'>Seat</th><th class='confirmationTableEntry'>Price</th></tr>";
-    confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th><th class='confirmationTableEntry'>" + seatName + "</th><th class='confirmationTableEntry'>" + price_paid + "</th></table>";
+    confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th><th class='confirmationTableEntry'>" + seatName + "</th><th class='confirmationTableEntry'>$" + price_paid + "</th></table>";
     $(".in").html(confirmationTable);
 }
 
+function getSeat(seatID) {
+    for (let i = 0; i < seats.length; i++) {
+        if (seats[i].id == seatID) {
+            return seats[i];
+        }
+    }
+    return -1;
+}
+
 /*Todo
-Fix the user info form
-Add to and from to the tickets
+
 */
