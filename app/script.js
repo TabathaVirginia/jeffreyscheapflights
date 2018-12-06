@@ -265,7 +265,7 @@ function handleDest() {
             if (pop == false) {
                 $("#destInput").after('<ul id="res"></ul>');
                 pop = true;
-                $("#res").on("click", "li", function() {
+                $("#res").on("click", "li", function () {
                     var curr = $(this).text();
                     $("#destInput").val(curr.substring(curr.length - 4, curr.length - 1));
                     $("#res").empty();
@@ -321,6 +321,7 @@ function login() {
 
 // Skeleton for using places instead of actual map
 function initPlace(lat, long) {
+    $(".in").append("</p>Explore your destination.</p>")
     $(".map").show();
     var mapCenter = new google.maps.LatLng(lat, long);
 
