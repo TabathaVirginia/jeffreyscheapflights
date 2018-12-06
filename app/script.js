@@ -31,7 +31,6 @@ $(document).ready(function () {
             var rightMonth = date.getMonth() + 1;
             var d = date.getFullYear() + "-" + rightMonth + "-" + date.getDate();
             $(".in").html("<p>Loading your flights. This may take a few seconds.</p>");
-            // alert("Loading your flights. This may take a few seconds.");
             loadDate(d);
         }
     });
@@ -159,9 +158,7 @@ $(document).ready(function () {
         }).done(function (data) {
             console.log("Ticket purchased!");
         });
-        var confirmationTable = "<table class='confirmationTable'><tr><th class='confirmationTableEntry'>Flight</th><th class='confirmationTableEntry'>From</th><th class='confirmationTableEntry'>To</th></tr>";
-        confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th></table>";
-        $(".in").html(confirmationTable);
+        makeConfirmationTable(flightId, seat_id, origin, dest);
         initPlace(destLat, destLong);
     })
 
@@ -272,7 +269,7 @@ function handleDest() {
 function display() {
     $(".in").empty();
     var empty = true;
-    var d = "<table><tr><th>Flight ID</th><th>Origin</th><th>Arrives At</th><th>Leaving At</th><th>Arrives</th><th>Buy Ticket</th></tr>";
+    var d = "<table><tr><th>Flight ID</th><th>Origin</th><th>Arrives At</th><th>Leaving At</th><th>Arrives At</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
@@ -418,12 +415,12 @@ function find_seat(flight_id, instance_id) {
             } else {
                 let instances = seats.split(";");
                 let purchased = false;
-                for(let j = 0; j < instances.length; j++){
-                    if(instances[j] == instance_id){
+                for (let j = 0; j < instances.length; j++) {
+                    if (instances[j] == instance_id) {
                         purchased = true;
                     }
                 }
-                if(!purchased){
+                if (!purchased) {
                     purchase_seat(seats[i].id, instance_id, seats[i].info);
                     return seats[i].id;
                 }
@@ -460,6 +457,7 @@ function makeUserForm(flightId, instanceID, dest) {
     $(".userInfoTable").append("<tr><td>Gender:</td><td class='userInputField'><input type='text' id='gender'></input></td></tr>");
 
     $(".in").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
+    $("#fName").focus();
 
 }
 
@@ -497,6 +495,20 @@ function airlineTable() {
     if (!empty) {
         $("#air").append(d);
     }
+}
+
+function makeConfirmationTable(flightId, seat_id, origin, dest) {
+    var seatPurchased;
+    for (var i = 0; i < seats.length; i++) {
+        if (seats[i].id == seat_id) {
+            seatPurchased = seats[i];
+            break;
+        }
+    }
+    var seatName = seatPurchased.row + seatPurchased.number;
+    var confirmationTable = "<table class='confirmationTable'><tr><th class='confirmationTableEntry'>Flight</th><th class='confirmationTableEntry'>From</th><th class='confirmationTableEntry'>To</th><th class='confirmationTableEntry'>Seat</th></tr>";
+    confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th><th class='confirmationTableEntry'>" + seatName + "</th></table>";
+    $(".in").html(confirmationTable);
 }
 
 /*Todo
