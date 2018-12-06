@@ -133,7 +133,7 @@ $(document).ready(function () {
         var destLong = airportsMap.get(dest).long;
 
         if (seat_id == -1) {
-            alert("This flight is filled, sorry ):");
+            alert("This flight is filled, sorry!");
             return;
         }
 
@@ -192,7 +192,7 @@ function handleOrigin() {
 
     //Suggestions logic
     var cache = {};
-    var drew = false;
+    var pop = false;
     $("#originInput").on("keyup", function (event) {
         var query = $("#originInput").val();
         if (query.length > 0) {
@@ -204,9 +204,9 @@ function handleOrigin() {
                 });
                 cache[query] = results;
             }
-            if (drew == false) {
+            if (pop == false) {
                 $("#originInput").after('<ul id="res"></ul>');
-                drew = true;
+                pop = true;
                 $("#res").on("click", "li", function () {
                     var curr = $(this).text();
                     $("#originInput").val(curr.substring(curr.length - 4, curr.length - 1));
@@ -218,7 +218,7 @@ function handleOrigin() {
             for (term in results) {
                 $("#res").append("<li>" + results[term] + "</li>");
             }
-        } else if (drew) {
+        } else if (pop) {
             $("#res").empty();
         }
     });
@@ -237,7 +237,7 @@ function handleDest() {
     });
 
     var cache = {};
-    var drew = false;
+    var pop = false;
     $("#destInput").on("keyup", function (event) {
         var query = $("#destInput").val();
         if (query.length > 0) {
@@ -249,10 +249,10 @@ function handleDest() {
                 });
                 cache[query] = results;
             }
-            if (drew == false) {
+            if (pop == false) {
                 $("#destInput").after('<ul id="res"></ul>');
-                drew = true;
-                $("#res").on("click", "li", function () {
+                pop = true;
+                $("#res").on("click", "li", function() {
                     var curr = $(this).text();
                     $("#destInput").val(curr.substring(curr.length - 4, curr.length - 1));
                     $("#res").empty();
@@ -263,7 +263,7 @@ function handleDest() {
             for (term in results) {
                 $("#res").append("<li>" + results[term] + "</li>");
             }
-        } else if (drew) {
+        } else if (pop) {
             $("#res").empty();
         }
     });
