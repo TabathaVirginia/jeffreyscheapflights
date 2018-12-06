@@ -13,7 +13,7 @@ var departureCache = [];
 var map;
 var service;
 var infoWindow;
-var seats;
+var seats = [];
 
 
 // JQuery Logic
@@ -42,6 +42,7 @@ $(document).ready(function () {
     $("#goToTickets").click(function (e) {
         $("#mainTitle").hide();
         $(".map").hide();
+        $(".in").html("<p>Loading your tickets...</p>");
         $.ajax({
             url: 'http://comp426.cs.unc.edu:3001/tickets',
             type: 'GET',
@@ -53,7 +54,6 @@ $(document).ready(function () {
             var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>From</th><th>To</th><th>Price</th><th>Seat</th></tr>";
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
-                console.log("data[i]", data[i]);
                 var seat = getSeat(data[i].seat_id);
                 // var 
                 (function (i) {
@@ -409,7 +409,7 @@ function loadDate(d) {
 }
 
 function find_seat(flight_id, instance_id) {
-    if (seats == undefined) {
+    if (seats.length == 0) {
         $.ajax({
             xhrFields: {
                 withCredentials: true
