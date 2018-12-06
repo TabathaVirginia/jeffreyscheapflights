@@ -35,8 +35,8 @@ body {
     display: block;
     margin: 0;
     padding: 50px;
-    color: #83C9F4;
-    background-color: #6F73D2;
+    color: #6f73d2;
+    background-color: #FFFFFF;
 }
 
 input {
@@ -62,14 +62,11 @@ a {
 
 .navbar-item {
     font-family: 'Comfortaa', cursive;
-    padding-bottom: 10px;
-    padding-top: 10px;
     float: right;
     font-size: 15px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding: 12px 20px;
     height: 100%;
-    color: #A3D5FF;
+    border-radius: 5px;
 }
 
 button {
@@ -83,24 +80,25 @@ button {
 }
 
 .left-navbar-item {
+    padding: 10px 25px;
     font-family: 'Comfortaa', cursive;
     color: #6F73D2;
     font-weight: bolder;
     font-size: 15pt;
     float: left;
     background-color: #D9F0FF;
-    border-radius: 5px;
 }
 
 a:hover {
     cursor: pointer;
-    background-color: #a9c1bd;
+    background-color: #a2a1ff;
+    color: white;
 }
 
 .navbar {
     top: 0;
     position: sticky;
-    background-color: #7681B3;
+    background-color: #3b48a0;
     text-align: center;
     height: 60px;
     padding: 10px;
@@ -157,7 +155,7 @@ ul {
 }
 
 footer {
-    background-color: #7681B3;
+    background-color: #3b48a0;
     text-align: center;
     font-size: 13px;
     color: #fffff9;
