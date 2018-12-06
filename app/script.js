@@ -40,6 +40,7 @@ $(document).ready(function () {
     });
 
     $("#goToTickets").click(function (e) {
+        $("#mainTitle").hide();
         $(".map").hide();
         $.ajax({
             url: 'http://comp426.cs.unc.edu:3001/tickets',
@@ -272,6 +273,7 @@ function handleDest() {
 }
 
 function display() {
+    $("#mainTitle").hide();
     $(".in").empty();
     var empty = true;
     var d = "<table><tr><th>Flight ID</th><th>From</th><th>To</th><th>Departure Time</th><th>Arrival Time</th><th>Price</th><th>Buy Ticket</th></tr>";
