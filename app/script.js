@@ -539,7 +539,3 @@ function getSeat(seatID) {
     }
     return -1;
 }
-
-/*Todo
-
-*/
