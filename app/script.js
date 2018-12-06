@@ -50,10 +50,10 @@ $(document).ready(function () {
             }
         }).done(function (data) {
             $(".in").empty();
-            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>Price</th><th>Seat</th></tr>";
+            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>From</th><th>To</th><th>Price</th><th>Seat</th></tr>";
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
-                console.log(data[i]);
+                console.log("data[i]", data[i]);
                 var seat = getSeat(data[i].seat_id);
                 // var 
                 (function (i) {
@@ -66,8 +66,14 @@ $(document).ready(function () {
                         }
                     }).done(function (data1) {
                         info = data1;
-                        console.log(data1);
-                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>$" + data[i].price_paid + "</th><th>" + (seat.row + seat.number) + "</th></tr>";
+                        var flight = flightInfo[data1.flight_id];
+                        if (flight) {
+                            var origin = flight.split(";")[0];
+                            var destination = flight.split(";")[4];
+                            // get orgiin and destination from flight
+                            d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + origin + "</th><th>" + destination + "</th><th>$" + data[i].price_paid + "</th><th>" + (seat.row + seat.number) + "</th></tr>";
+                        }
+
                     });
                 })(i);
             }
@@ -530,6 +536,5 @@ function getSeat(seatID) {
 }
 
 /*Todo
-Fix the user info form
-Add to and from to the tickets
+
 */
