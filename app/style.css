@@ -113,7 +113,7 @@ table {
 }
 
 td, th {
-    border: 1px solid #dddddd;
+    border: 3px solid #3b48a0;
     text-align: left;
     padding: 8px;
 }
@@ -200,3 +200,4 @@ input[type="number"] {
     width: 70%;
     margin: 0 auto;
 }
+
