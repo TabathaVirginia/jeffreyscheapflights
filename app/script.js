@@ -438,7 +438,7 @@ function find_seat(flight_id, instance_id) {
                 let instances = seats.split(";");
                 let purchased = false;
                 for (let j = 0; j < instances.length; j++) {
-                    if (instances[j] == instance_id) {
+                    if (parseInt(instances[j]) == parseInt(instance_id)) {
                         purchased = true;
                     }
                 }
