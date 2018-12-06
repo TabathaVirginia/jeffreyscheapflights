@@ -49,9 +49,11 @@ $(document).ready(function () {
             }
         }).done(function (data) {
             $(".in").empty();
-            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th></tr>";
+            var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>Price</th></tr>";
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
+                console.log(data[i]);
+                // var 
                 (function (i) {
                     $.ajax({
                         url: 'http://comp426.cs.unc.edu:3001/instances/' + data[i].instance_id,
@@ -62,7 +64,8 @@ $(document).ready(function () {
                         }
                     }).done(function (data1) {
                         info = data1;
-                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th></tr>";
+                        console.log(data1);
+                        d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + data[i].price_paid + "</th></tr>";
                     });
                 })(i);
             }
@@ -121,6 +124,7 @@ $(document).ready(function () {
         var lName = $("#lName").val();
         var age = parseInt($("#age").val());
         var gender = $("#gender").val();
+        var price_paid = $(this).attr("price_paid")
         if (!(fName && mName && lName && age && gender)) {
             return;
         }
@@ -150,7 +154,7 @@ $(document).ready(function () {
                     age: age,
                     gender: gender,
                     is_purchased: "true",
-                    price_paid: "100.00",
+                    price_paid: price_paid,
                     instance_id: instanceID,
                     seat_id: seat_id
                 }
@@ -158,7 +162,7 @@ $(document).ready(function () {
         }).done(function (data) {
             console.log("Ticket purchased!");
         });
-        makeConfirmationTable(flightId, seat_id, origin, dest);
+        makeConfirmationTable(flightId, seat_id, origin, dest, price_paid);
         initPlace(destLat, destLong);
     })
 
@@ -167,8 +171,9 @@ $(document).ready(function () {
         $(".in").empty();
         var flightId = parseInt($(this).attr("flightId"));
         var instanceID = parseInt($(this).attr("instanceID"));
+        var price_paid = parseFloat($(this).attr("price_paid"));
         dest = $(this).attr("dest")
-        makeUserForm(flightId, instanceID, dest);
+        makeUserForm(flightId, instanceID, dest, price_paid);
 
     })
 });
@@ -269,12 +274,13 @@ function handleDest() {
 function display() {
     $(".in").empty();
     var empty = true;
-    var d = "<table><tr><th>Flight ID</th><th>Origin</th><th>Arrives At</th><th>Leaving At</th><th>Arrives At</th><th>Buy Ticket</th></tr>";
+    var d = "<table><tr><th>Flight ID</th><th>From</th><th>To</th><th>Departure Time</th><th>Arrival Time</th><th>Price</th><th>Buy Ticket</th></tr>";
     for (var i = 0; i < flightIDs.length; i++) {
         var info = flightInfo[flightIDs[i]].split(";");
         if (info[0] === origin && info[4] === dest) {
             empty = false;
-            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[4] + "</th><th>" + info[8] + "</th><th>" + info[9] + "<th><button class='buyTicketButton' flightId=" + flightIDs[i] + " instanceID=" + instanceIDs[i] + " origin=" + origin + " dest=" + dest + ">Buy Ticket</th></tr>";
+            var price_paid = (Math.random() * 500).toFixed(2);
+            d += "<tr><th>" + flightIDs[i] + "</th><th>" + info[0] + "</th><th>" + info[4] + "</th><th>" + info[8] + "</th><th>" + info[9] + "<th>$" + price_paid + "</th><th><button class='buyTicketButton' flightId=" + flightIDs[i] + " instanceID=" + instanceIDs[i] + " origin=" + origin + " dest=" + dest + " price_paid=" + price_paid + ">Buy Ticket</th></tr>";
         }
     }
     d += "</table>";
@@ -447,7 +453,7 @@ function purchase_seat(seat_id, instance_id, info) {
     });
 }
 
-function makeUserForm(flightId, instanceID, dest) {
+function makeUserForm(flightId, instanceID, dest, price_paid) {
     // $(".in").html("<div class='userInfoForm'></div>");
     $(".in").append("<table class='userInfoTable'></table>");
     $(".userInfoTable").append("<tr><td>First Name:</td><td class='userInputField'><input type='text' id='fName'></input></td></tr>");
@@ -456,7 +462,7 @@ function makeUserForm(flightId, instanceID, dest) {
     $(".userInfoTable").append("<tr><td>Age:</td><td class='userInputField'><input type='number' id='age'></input></td></tr>");
     $(".userInfoTable").append("<tr><td>Gender:</td><td class='userInputField'><input type='text' id='gender'></input></td></tr>");
 
-    $(".in").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + ">Submit</button>");
+    $(".in").append("<button id='submitUserInfo' instanceID=" + instanceID + " dest=" + dest + " flightId=" + flightId + " price_paid=" + price_paid + ">Submit</button>");
     $("#fName").focus();
 
 }
@@ -497,7 +503,7 @@ function airlineTable() {
     }
 }
 
-function makeConfirmationTable(flightId, seat_id, origin, dest) {
+function makeConfirmationTable(flightId, seat_id, origin, dest, price_paid) {
     var seatPurchased;
     for (var i = 0; i < seats.length; i++) {
         if (seats[i].id == seat_id) {
@@ -506,8 +512,8 @@ function makeConfirmationTable(flightId, seat_id, origin, dest) {
         }
     }
     var seatName = seatPurchased.row + seatPurchased.number;
-    var confirmationTable = "<table class='confirmationTable'><tr><th class='confirmationTableEntry'>Flight</th><th class='confirmationTableEntry'>From</th><th class='confirmationTableEntry'>To</th><th class='confirmationTableEntry'>Seat</th></tr>";
-    confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th><th class='confirmationTableEntry'>" + seatName + "</th></table>";
+    var confirmationTable = "<table class='confirmationTable'><tr><th class='confirmationTableEntry'>Flight</th><th class='confirmationTableEntry'>From</th><th class='confirmationTableEntry'>To</th><th class='confirmationTableEntry'>Seat</th><th class='confirmationTableEntry'>Price</th></tr>";
+    confirmationTable += "<tr><th class='confirmationTableEntry'>" + flightId + "</th><th class='confirmationTableEntry'>" + origin + "</th><th class='confirmationTableEntry'>" + dest + "</th><th class='confirmationTableEntry'>" + seatName + "</th><th class='confirmationTableEntry'>" + price_paid + "</th></table>";
     $(".in").html(confirmationTable);
 }
 
