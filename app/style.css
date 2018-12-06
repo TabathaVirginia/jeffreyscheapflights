@@ -204,5 +204,6 @@ input[type="number"] {
 #res li:hover {
     background-color: #a2a1ff;
     color: white;
+    cursor: pointer;
 }
 
