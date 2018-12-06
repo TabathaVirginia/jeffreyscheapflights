@@ -58,7 +58,6 @@ $(document).ready(function () {
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
                 var seat = getSeat(data[i].seat_id);
-                console.log(seats);
                 // var 
                 (function (i, seat) {
                     $.ajax({
@@ -466,7 +465,7 @@ function purchase_seat(seat_id, instance_id, info) {
             }
         }
     }).done(function (data) {
-        console.log("seat purchased!");
+        console.log("Seat purchased!");
     });
 }
 
