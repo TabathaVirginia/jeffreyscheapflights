@@ -52,7 +52,7 @@ $(document).ready(function () {
             var d = "<table><tr><th>Ticket ID</th><th>Name</th><th>Date</th><th>Price</th></tr>";
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].first_name + " " + data[i].middle_name.substring(0, 1) + ". " + data[i].last_name;
-                console.log(data[i]);
+                //console.log(data[i]);
                 // var 
                 (function (i) {
                     $.ajax({
@@ -64,7 +64,7 @@ $(document).ready(function () {
                         }
                     }).done(function (data1) {
                         info = data1;
-                        console.log(data1);
+                        //console.log(data1);
                         d += "<tr><th>" + data[i].id + "</th><th>" + name + "</th><th>" + data1.date + "</th><th>" + data[i].price_paid + "</th></tr>";
                     });
                 })(i);
@@ -85,9 +85,12 @@ $(document).ready(function () {
                 var found = false;
                 var airID = 0;
                 for (var i = 0; i < airlines.length; i++) {
-                    if (airlines[i] == toNote) {
-                        found = true;
-                        airID = i;
+                    if (airlines[i] != undefined) {
+                        var info = airlines[i].split(";");
+                        if (info[0] == toNote) {
+                            found = true;
+                            airID = i;
+                        }
                     }
                 }
                 if (!found) {
@@ -483,6 +486,7 @@ function pullAirlines() {
 }
 
 function airlineTable() {
+    $("#air").remove();
     $(".in").append("<div id='air'></div>");
     var empty = true;
     var d = "<table><tr><th>Airline</th><th>Notes</th></tr>";
